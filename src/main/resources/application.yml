@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: dnlemalelql123!
+    url: jdbc:mysql://withme.c5qigjn0tabn.ap-northeast-2.rds.amazonaws.com:3306/hackathon?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&rewriteBatchedStatements=true
+    username: admin
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+
+KEY:
+  JWT: dkwndnlemal123!
