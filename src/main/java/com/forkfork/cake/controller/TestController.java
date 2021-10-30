@@ -40,19 +40,20 @@ public class TestController {
         Auth newAuth = authService.createAuth(accessToken, refreshToken, loginTestRequest.getEmail());
         authService.saveAuth(newAuth);
 
-        // create a cookie
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-
-        // expires in 30 days
-        cookie.setMaxAge(30 * 24 * 60 * 60);
-
-        // optional properties
-        cookie.setHttpOnly(true);
-        cookie.setPath("/refresh");
-
+//        // create a cookie
+//        Cookie cookie = new Cookie("refreshToken", refreshToken);
+//
+//        // expires in 30 days
+//        cookie.setMaxAge(30 * 24 * 60 * 60);
+//
+//        // optional properties
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/refresh");
         // add cookie to response
-        response.addCookie(cookie);
+//        response.addCookie(cookie);
 
+        String refreshCookie = "refreshToken="+ refreshToken +"; Max-Age=2592000; Path=/refresh; HttpOnly; SameSite=None;";
+        response.setHeader("Set-Cookie", refreshCookie);
 
         return ResFormat.response(true, 201, accessToken);
     }
@@ -91,19 +92,21 @@ public class TestController {
         Auth newAuth = authService.createAuth(accessToken, newRefreshToken, email);
         authService.saveAuth(newAuth);
 
-        // create a cookie
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
+//        // create a cookie
+//        Cookie cookie = new Cookie("refreshToken", refreshToken);
+//
+//        // expires in 30 days
+//        cookie.setMaxAge(30 * 24 * 60 * 60);
+//
+//        // optional properties
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/refresh");
+//
+//        // add cookie to response
+//        response.addCookie(cookie);
 
-        // expires in 30 days
-        cookie.setMaxAge(30 * 24 * 60 * 60);
-
-        // optional properties
-        cookie.setHttpOnly(true);
-        cookie.setPath("/refresh");
-
-        // add cookie to response
-        response.addCookie(cookie);
-
+        String refreshCookie = "refreshToken="+ newRefreshToken +"; Max-Age=2592000; Path=/refresh; HttpOnly; SameSite=None;";
+        response.setHeader("Set-Cookie", refreshCookie);
 
         return ResFormat.response(true, 201, accessToken);
     }
