@@ -47,7 +47,6 @@ public class TestController {
         cookie.setMaxAge(30 * 24 * 60 * 60);
 
         // optional properties
-        cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/refresh");
 
@@ -99,7 +98,6 @@ public class TestController {
         cookie.setMaxAge(30 * 24 * 60 * 60);
 
         // optional properties
-        cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/refresh");
 
