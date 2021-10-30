@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: dnlemalelql123!
-    url: jdbc:mysql://withme.c5qigjn0tabn.ap-northeast-2.rds.amazonaws.com:3306/hackathon?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&rewriteBatchedStatements=true
+    password: ENC(rv2x9lGbQu+aVdGYwq05LonjbchLGouh)
+    url: ENC(oAF/Cuc3xMcECKrzrgDOQFi0I1CviXHmLUXYzO4lSF9oW2bWvHLsMjdGUwA/O8H2Xw9acuRQXWqfNFV4SPqavEMzjSJhIrBSREtLkUFwRv9C0+6CvtH9Uxp46cZ13UeKzYD9g2WlQMuYaF/NtuPgZ3zb2O9Eq2uIUkAnNJE7Tp1uSvbboMHyD3UvR6xRHayhCykAyB6fI3DquxWhji3jLSvld4Eot110tJR20zk+U+78rQDvIk1GyQ==)
     username: admin
 
   jpa:
@@ -12,6 +12,9 @@ spring:
     hibernate:
       ddl-auto: update
 
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
 
 KEY:
-  JWT: dkwndnlemal123!
+  JWT: ENC(L+Da2qqjOez9Vi6plXZg5YqXmLHTcj+g)

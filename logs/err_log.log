@@ -1,0 +1,16 @@
+ERROR 21-10-30 12:18:18[main] [LoggingFailureAnalysisReporter:40] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'spring.datasource.url' to java.lang.String:
+
+    Reason: org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource.url' to java.lang.String
+
+Action:
+
+Update your application's configuration
+
