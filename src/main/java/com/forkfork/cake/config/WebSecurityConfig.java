@@ -25,7 +25,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .headers().frameOptions().disable();
 
-        http.authorizeRequests().antMatchers("/user/admin/**").access("hasAuthority('ADMIN')").antMatchers("/user/info").access("hasAuthority('USER')").antMatchers("/", "/user/signup", "/user/denied", "/user/logout/result").permitAll().antMatchers("/swagger-resources/**").permitAll().anyRequest().authenticated().and().formLogin().loginPage("/user/loginPage").loginProcessingUrl("/login").defaultSuccessUrl("/user/login/result").permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/user/logout")).logoutSuccessUrl("/user/logout/result").invalidateHttpSession(true).and().exceptionHandling().accessDeniedPage("/user/denied");
     }
 
     @Bean

@@ -37,31 +37,9 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
         if (accessToken != null) {
             if (authService.isValidToken(accessToken)) {
                 return true;
-            } else {
-                String uid = authService.getExpiredSubject(accessToken);
-                Auth auth = authService.findAuthByAccessToken(accessToken);
-
-                if (auth == null) {
-                    response = falseSetting(response);
-                    return false;
-                }
-
-                if (!authService.isValidToken(auth.getRefreshToken())) {
-                    response = falseSetting(response);
-                    return false;
-                }
-
-                if (uid.equals(authService.getSubject(authService.getClaimsByToken(auth.getRefreshToken())))) {
-                    String newAccessToken = authService.createToken(uid, 1 * 60 * 1000L);
-                    String newRefreshToken = authService.createToken(uid, 30 * 24 * 60 * 60 * 1000L);
-                    authService.deleteAuthByEmail(auth.getEmail());
-                    Auth newAuth = authService.createAuth(newAccessToken,newRefreshToken, auth.getEmail());
-                    authService.saveAuth(newAuth);
-
-                    request.setAttribute("uid", auth.getEmail());
-                    response.setHeader("Authorization", "Bearer "+newAccessToken);
-                }
-                return true;
+            }else {
+                response = falseSetting(response);
+                return false;
             }
         } else {
             response = falseSetting(response);

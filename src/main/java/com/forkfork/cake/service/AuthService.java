@@ -93,4 +93,8 @@ public class AuthService {
     public void deleteAuthByEmail(String email) {
         authRepository.deleteByEmail(email);
     }
+
+    public Auth findAuthByRefreshToken(String refreshToken) {
+        return authRepository.findByRefreshToken(refreshToken);
+    }
 }
