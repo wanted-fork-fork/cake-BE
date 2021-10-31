@@ -52,7 +52,7 @@ public class TestController {
         // add cookie to response
 //        response.addCookie(cookie);
 
-        String refreshCookie = "refreshToken="+ refreshToken +"; Max-Age=2592000; Path=/refresh; HttpOnly; SameSite=None; secure;";
+        String refreshCookie = "refreshToken="+ refreshToken +"; Max-Age=2592000; Path=/; HttpOnly; SameSite=None; secure;";
         response.setHeader("Set-Cookie", refreshCookie);
 
         return ResFormat.response(true, 201, accessToken);
@@ -105,7 +105,7 @@ public class TestController {
 //        // add cookie to response
 //        response.addCookie(cookie);
 
-        String refreshCookie = "refreshToken="+ newRefreshToken +"; Max-Age=2592000; Path=/refresh; HttpOnly; SameSite=None; secure;";
+        String refreshCookie = "refreshToken="+ newRefreshToken +"; Max-Age=2592000; Path=/; HttpOnly; SameSite=None; secure;";
         response.setHeader("Set-Cookie", refreshCookie);
 
         return ResFormat.response(true, 201, accessToken);
