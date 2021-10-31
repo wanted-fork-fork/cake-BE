@@ -23,7 +23,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("https://wanted-cake.netlify.app", "http://localhost:3000", "http://localhost.org:3000")
                 .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-                .allowCredentials(true);
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 
     @Override

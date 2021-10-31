@@ -20,6 +20,5 @@ KEY:
   JWT: ENC(L+Da2qqjOez9Vi6plXZg5YqXmLHTcj+g)
 
 server.ssl.key-store: keystore.p12
-server.ssl.key-store-password: ENC(97iP/2ALi9rO/COceAvr5g==)
+server.ssl.key-store-password: ec2-user
 server.ssl.keyStoreType: PKCS12
-server.ssl.keyAlias: tomcat
