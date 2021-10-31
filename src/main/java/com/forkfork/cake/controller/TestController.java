@@ -25,6 +25,11 @@ public class TestController {
     private final AuthService authService;
     private final JwtTokenUtil jwtTokenUtil;
 
+    @GetMapping
+    public String main() {
+        return "index page";
+    }
+
     @PostMapping("login")
     @Transactional
     public ResponseEntity login(@RequestBody LoginTestRequest loginTestRequest, HttpServletResponse response) {
