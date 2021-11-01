@@ -23,6 +23,12 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
     @Transactional
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
 
+        String method = request.getMethod();
+
+        if(method.equals("OPTIONS")){
+            return true;
+        }
+
         String authorization = request.getHeader("Authorization");
 
         if (authorization == null) {
