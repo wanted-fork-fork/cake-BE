@@ -12,7 +12,6 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @Data
-@Getter
 public class Auth {
 
     @Id

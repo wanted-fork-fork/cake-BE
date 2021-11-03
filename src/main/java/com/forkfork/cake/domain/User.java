@@ -1,0 +1,100 @@
+package com.forkfork.cake.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String email;
+
+    private String pwd;
+
+    private String nickname;
+
+    // 1.인문대 2.사회대 3.공대 4.자연대 5.경영대 6.사범대 7.예술대 8.정보통신
+    private int univCategory;
+
+    //    유저 프로필
+    private String img;
+
+    private String portfolio;
+
+    private Long point;
+
+    private Long reviewCnt;
+
+    private Long reviewPoint;
+
+    @JoinColumn
+    @ManyToOne
+    private University university;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserCategory> userCategoryList = new LinkedList<>();
+
+    public void addUserCategory(UserCategory category) {
+        userCategoryList.add(category);
+        category.setUser(this);
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Study> studyList = new LinkedList<>();
+
+    public void addStudy(Study study) {
+        studyList.add(study);
+        study.setUser(this);
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PointRecord> pointRecordList = new LinkedList<>();
+
+    public void addPointRecord(PointRecord pointRecord) {
+        pointRecordList.add(pointRecord);
+        pointRecord.setUser(this);
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<StudyMember> studyMemberList = new LinkedList<>();
+
+    public void addStudyMember(StudyMember studyMember) {
+        studyMemberList.add(studyMember);
+        studyMember.setUser(this);
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviewList = new LinkedList<>();
+
+    public void addReview(Review review) {
+        reviewList.add(review);
+        review.setUser(this);
+    }
+
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
+    private List<PointDeal> fromUserList = new LinkedList<>();
+
+    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
+    private List<PointDeal> toUserList = new LinkedList<>();
+
+    public void addPointDeal(PointDeal pointDeal) {
+        fromUserList.add(pointDeal);
+        pointDeal.setFromUser(this);
+
+        toUserList.add(pointDeal);
+        pointDeal.setToUser(this);
+    }
+}
