@@ -16,4 +16,8 @@ public class UniversityService {
     public List<University> findAllUniversity() {
         return universityRepository.findAll();
     }
+
+    public University findUnivById(Long id) {
+        return universityRepository.findById(id).orElse(null);
+    }
 }
