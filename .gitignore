@@ -1,5 +1,7 @@
 logs/
-
+keystore.p12
+/keystore.p12
+**/keystore.p12
 HELP.md
 .gradle
 build/

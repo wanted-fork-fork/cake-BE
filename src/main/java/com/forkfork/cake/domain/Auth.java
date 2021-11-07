@@ -2,17 +2,13 @@ package com.forkfork.cake.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-@Getter
 public class Auth {
 
     @Id
@@ -22,7 +18,9 @@ public class Auth {
     private String refreshToken;
     private String accessToken;
 
-    private String email;
+    @OneToOne
+    @JoinColumn
+    private User user;
 
 
     public void updateRefreshToken(String refreshToken) {

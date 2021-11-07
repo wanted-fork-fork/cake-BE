@@ -1,6 +1,7 @@
 package com.forkfork.cake.repository;
 
 import com.forkfork.cake.domain.Auth;
+import com.forkfork.cake.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AuthRepository extends JpaRepository<Auth, Long> {
@@ -10,5 +11,5 @@ public interface AuthRepository extends JpaRepository<Auth, Long> {
 
     Auth findByAccessToken(String accessToken);
 
-    void deleteByEmail(String email);
+    void deleteByUser(User user);
 }

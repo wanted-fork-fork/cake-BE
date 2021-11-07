@@ -1,6 +1,7 @@
 package com.forkfork.cake.service;
 
 import com.forkfork.cake.domain.Auth;
+import com.forkfork.cake.domain.User;
 import com.forkfork.cake.repository.AuthRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -66,11 +67,11 @@ public class AuthService {
         }
     }
 
-    public Auth createAuth(String accessToken,String refreshToken, String email) {
+    public Auth createAuth(String accessToken,String refreshToken, User user) {
         return Auth.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .email(email)
+                .user(user)
                 .build();
     }
 
@@ -90,8 +91,12 @@ public class AuthService {
         authRepository.deleteByRefreshToken(refreshToken);
     }
 
-    public void deleteAuthByEmail(String email) {
-        authRepository.deleteByEmail(email);
+//    public void deleteAuthByEmail(String email) {
+//        authRepository.deleteByEmail(email);
+//    }
+
+    public void deleteAuthByUser(User user) {
+        authRepository.deleteByUser(user);
     }
 
     public Auth findAuthByRefreshToken(String refreshToken) {
