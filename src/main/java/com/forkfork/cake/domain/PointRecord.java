@@ -20,7 +20,7 @@ public class PointRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 1. 충전, 2. 출금
+    // 1. 충전, 2. 출금 3. 리워드
     private int type;
 
     private Long point;

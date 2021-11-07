@@ -5,28 +5,27 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-public class Review {
+public class Reward {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double reviewPoint;
+    private String name;
 
-    private String msg;
+    private String content;
 
-    @ManyToOne
-    @JoinColumn
-    private User fromUser;
+    private String img;
 
-    @ManyToOne
-    @JoinColumn
-    private User toUser;
+    private Long point;
 }

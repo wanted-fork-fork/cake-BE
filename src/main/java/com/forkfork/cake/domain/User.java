@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,15 +32,16 @@ public class User {
     private int univCategory;
 
     //    유저 프로필
+    @Column(columnDefinition = "TEXT")
     private String img;
 
     private String portfolio;
 
     private Long point;
 
-    private Long reviewCnt;
-
-    private Long reviewPoint;
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date createdAt;
 
     @JoinColumn
     @ManyToOne
@@ -76,13 +79,20 @@ public class User {
         studyMember.setUser(this);
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Review> reviewList = new LinkedList<>();
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
+    private List<Review> fromReviewList = new LinkedList<>();
+
+    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
+    private List<Review> toReviewList = new LinkedList<>();
 
     public void addReview(Review review) {
-        reviewList.add(review);
-        review.setUser(this);
+        fromReviewList.add(review);
+        review.setFromUser(this);
+
+        toReviewList.add(review);
+        review.setToUser(this);
     }
+
 
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
     private List<PointDeal> fromUserList = new LinkedList<>();
@@ -97,4 +107,7 @@ public class User {
         toUserList.add(pointDeal);
         pointDeal.setToUser(this);
     }
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Auth auth;
 }

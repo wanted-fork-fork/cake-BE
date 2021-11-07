@@ -10,5 +10,4 @@ public interface AuthRepository extends JpaRepository<Auth, Long> {
 
     Auth findByAccessToken(String accessToken);
 
-    void deleteByEmail(String email);
 }

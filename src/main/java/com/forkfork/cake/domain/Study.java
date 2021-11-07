@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -39,12 +40,15 @@ public class Study {
 
     private Long peopleCnt;
 
-    //    1. 모집중 2. 예약중(임시) 3. 마감
-    private int state;
+    private boolean earlyClosing;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date updatedAt;
 
     //    작성자
     @ManyToOne

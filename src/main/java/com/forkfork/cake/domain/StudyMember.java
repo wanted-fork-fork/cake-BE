@@ -22,7 +22,7 @@ public class StudyMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    1. 스터디 생성자, 2. 신청자, 3. 참여 확정자
+    //    1. 스터디 생성자, 2. 신청자, 3. 참여 확정자, 4. 참여 반려자
     private int state;
 
     // 신청 시 함께 남긴 말

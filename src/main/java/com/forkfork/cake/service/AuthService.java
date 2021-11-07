@@ -70,7 +70,7 @@ public class AuthService {
         return Auth.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .email(email)
+//                .email(email)
                 .build();
     }
 
@@ -90,9 +90,9 @@ public class AuthService {
         authRepository.deleteByRefreshToken(refreshToken);
     }
 
-    public void deleteAuthByEmail(String email) {
-        authRepository.deleteByEmail(email);
-    }
+//    public void deleteAuthByEmail(String email) {
+//        authRepository.deleteByEmail(email);
+//    }
 
     public Auth findAuthByRefreshToken(String refreshToken) {
         return authRepository.findByRefreshToken(refreshToken);
