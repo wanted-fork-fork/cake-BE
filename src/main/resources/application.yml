@@ -12,6 +12,22 @@ spring:
     hibernate:
       ddl-auto: update
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(nByHugM5cVyzCoGWtB7fivRjl/DHS2nNlatDZtY/b5E=)
+    password: ENC(Ab/pF8aVcf/pUOJXUvSQS1gQV8EixUsT7Wg+IEBZ2UA=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
@@ -19,6 +35,17 @@ jasypt:
 KEY:
   JWT: ENC(L+Da2qqjOez9Vi6plXZg5YqXmLHTcj+g)
 
+cloud:
+  aws:
+    credentials:
+      accessKey: ENC(3Z+OyRTPBuFTVmqz+9KeT/jOjsgcGCdH9J+w1JmR12k=)
+      secretKey: ENC(cwKingEYIkfICpt6YiuDjDGWfmuyC8vGP29ZOsa4cD2WzwFYVfo5xXWxWjvAykgGMTn+wTNzE4g=)
+    s3:
+      bucket: fork-fork-cake
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 ---
 
 spring:

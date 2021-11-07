@@ -91,9 +91,6 @@ public class AuthService {
         authRepository.deleteByRefreshToken(refreshToken);
     }
 
-//    public void deleteAuthByEmail(String email) {
-//        authRepository.deleteByEmail(email);
-//    }
 
     public void deleteAuthByUser(User user) {
         authRepository.deleteByUser(user);
@@ -102,4 +99,5 @@ public class AuthService {
     public Auth findAuthByRefreshToken(String refreshToken) {
         return authRepository.findByRefreshToken(refreshToken);
     }
+
 }

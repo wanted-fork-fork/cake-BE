@@ -1,26 +1,18 @@
 package com.forkfork.cake.controller;
 
-import com.forkfork.cake.domain.Auth;
-import com.forkfork.cake.dto.request.LoginTestRequest;
 import com.forkfork.cake.service.AuthService;
 import com.forkfork.cake.util.JwtTokenUtil;
 import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequiredArgsConstructor
-public class TestController {
+public class RootController {
 
     private final AuthService authService;
     private final JwtTokenUtil jwtTokenUtil;
@@ -116,10 +108,10 @@ public class TestController {
 //        return ResFormat.response(true, 201, accessToken);
 //    }
 //
-//    @GetMapping("/test")
-//    public ResponseEntity test(HttpServletRequest request) {
-//        String uid = jwtTokenUtil.getSubject(request);
-//
-//        return ResFormat.response(true, 200, uid);
-//    }
+    @GetMapping("/test")
+    public ResponseEntity<Object> test(HttpServletRequest request) {
+        String uid = jwtTokenUtil.getSubject(request);
+
+        return ResFormat.response(true, 200, uid);
+    }
 }
