@@ -19,6 +19,13 @@ jasypt:
 KEY:
   JWT: ENC(L+Da2qqjOez9Vi6plXZg5YqXmLHTcj+g)
 
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
 server.ssl.key-store: keystore.p12
 server.ssl.key-store-password: ENC(0bK1+y9RglKiVtVsGYjTnKWrnWqSr/Ke)
 server.ssl.keyStoreType: PKCS12
