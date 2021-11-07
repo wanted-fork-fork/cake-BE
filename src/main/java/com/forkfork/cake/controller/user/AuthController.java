@@ -10,10 +10,7 @@ import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +27,7 @@ public class AuthController {
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     @Transactional
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
 
@@ -47,6 +44,7 @@ public class AuthController {
 
         String accessToken = authService.createToken(userByEmail.getEmail(), 2 * 60 * 60 * 1000L);
         String refreshToken = authService.createToken(userByEmail.getEmail(), 30 * 24 * 60 * 60 * 1000L);
+
         authService.deleteAuthByUser(userByEmail);
 
         Auth newAuth = authService.createAuth(accessToken, refreshToken, userByEmail);

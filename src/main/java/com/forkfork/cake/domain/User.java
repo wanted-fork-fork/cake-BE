@@ -109,6 +109,6 @@ public class User {
         pointDeal.setToUser(this);
     }
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user")
     private Auth auth;
 }
