@@ -35,6 +35,17 @@ jasypt:
 KEY:
   JWT: ENC(L+Da2qqjOez9Vi6plXZg5YqXmLHTcj+g)
 
+cloud:
+  aws:
+    credentials:
+      accessKey: ENC(3Z+OyRTPBuFTVmqz+9KeT/jOjsgcGCdH9J+w1JmR12k=)
+      secretKey: ENC(cwKingEYIkfICpt6YiuDjDGWfmuyC8vGP29ZOsa4cD2WzwFYVfo5xXWxWjvAykgGMTn+wTNzE4g=)
+    s3:
+      bucket: fork-fork-cake
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 ---
 
 spring:

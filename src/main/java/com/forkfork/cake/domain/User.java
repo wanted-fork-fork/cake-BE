@@ -35,6 +35,7 @@ public class User {
     @Column(columnDefinition = "TEXT")
     private String img;
 
+    @Column(columnDefinition = "TEXT")
     private String portfolio;
 
     private Long point;

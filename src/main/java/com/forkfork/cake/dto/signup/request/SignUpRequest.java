@@ -1,4 +1,4 @@
-package com.forkfork.cake.dto.request.signup.request;
+package com.forkfork.cake.dto.signup.request;
 
 import com.forkfork.cake.domain.University;
 import com.forkfork.cake.domain.User;
