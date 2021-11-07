@@ -1,4 +1,4 @@
-package com.forkfork.cake.dto.request.university.response;
+package com.forkfork.cake.dto.request.signup.response;
 
 import lombok.Data;
 

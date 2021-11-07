@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequiredArgsConstructor
-public class TestController {
+public class RootController {
 
     private final AuthService authService;
     private final JwtTokenUtil jwtTokenUtil;
