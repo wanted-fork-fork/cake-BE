@@ -2,9 +2,14 @@ package com.forkfork.cake.controller;
 
 import com.forkfork.cake.service.AuthService;
 import com.forkfork.cake.util.JwtTokenUtil;
+import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequiredArgsConstructor
 public class RootController {
@@ -103,10 +108,10 @@ public class RootController {
 //        return ResFormat.response(true, 201, accessToken);
 //    }
 //
-//    @GetMapping("/test")
-//    public ResponseEntity test(HttpServletRequest request) {
-//        String uid = jwtTokenUtil.getSubject(request);
-//
-//        return ResFormat.response(true, 200, uid);
-//    }
+    @GetMapping("/test")
+    public ResponseEntity<Object> test(HttpServletRequest request) {
+        String uid = jwtTokenUtil.getSubject(request);
+
+        return ResFormat.response(true, 200, uid);
+    }
 }

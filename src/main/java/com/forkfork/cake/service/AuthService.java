@@ -102,4 +102,5 @@ public class AuthService {
     public Auth findAuthByRefreshToken(String refreshToken) {
         return authRepository.findByRefreshToken(refreshToken);
     }
+
 }
