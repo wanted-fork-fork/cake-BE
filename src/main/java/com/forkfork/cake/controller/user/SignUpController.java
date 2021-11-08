@@ -1,17 +1,12 @@
 package com.forkfork.cake.controller.user;
 
-import com.forkfork.cake.domain.Certification;
-import com.forkfork.cake.domain.University;
-import com.forkfork.cake.domain.User;
+import com.forkfork.cake.domain.*;
 import com.forkfork.cake.dto.signup.request.ConfirmCertificationReqeust;
 import com.forkfork.cake.dto.signup.request.OverlapEmailReqeust;
 import com.forkfork.cake.dto.signup.request.SendCertificationReqeust;
 import com.forkfork.cake.dto.signup.request.SignUpRequest;
 import com.forkfork.cake.dto.signup.response.FindAllUniversityResponse;
-import com.forkfork.cake.service.CertificationService;
-import com.forkfork.cake.service.MailService;
-import com.forkfork.cake.service.UniversityService;
-import com.forkfork.cake.service.UserService;
+import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +28,9 @@ public class SignUpController {
     private final CertificationService certificationService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final UserCategoryService userCategoryService;
+    private final CategoryService categoryService;
+
 
     @GetMapping("/univ")
     public ResponseEntity<Object> findAllUniversity() {
@@ -89,8 +87,23 @@ public class SignUpController {
         String encodedPwd = passwordEncoder.encode(signUpRequest.getPwd());
         University university = universityService.findUnivById(signUpRequest.getUniv());
 
-        User user = signUpRequest.toEntity(encodedPwd, university);
+        User user = signUpRequest.toUserEntity(encodedPwd, university);
         userService.saveUser(user);
+
+        for (Long giveId:
+             signUpRequest.getGive()) {
+            Category categoryById = categoryService.findCategoryById(giveId);
+            UserCategory userCategory = UserCategory.builder().category(categoryById).user(user).type(1).build();
+            userCategoryService.saveUserCategory(userCategory);
+        }
+
+        for (Long takeId:
+                signUpRequest.getTake()) {
+            Category categoryById = categoryService.findCategoryById(takeId);
+            UserCategory userCategory = UserCategory.builder().category(categoryById).user(user).type(2).build();
+            userCategoryService.saveUserCategory(userCategory);
+        }
+
 
         return ResFormat.response(true, 201, "유저 생성을 완료했습니다.");
 
