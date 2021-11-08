@@ -4,6 +4,8 @@ import com.forkfork.cake.domain.University;
 import com.forkfork.cake.domain.User;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class SignUpRequest {
     //    1. 이메일 2. 비밀번호 3. 닉네임 4. 프로필 이미지 5. 단과대 6. 학교
@@ -13,8 +15,10 @@ public class SignUpRequest {
     String img;
     int univCategory;
     Long univ;
+    List<Long> give;
+    List<Long> take;
 
-    public User toEntity(String encodedPwd, University university) {
+    public User toUserEntity(String encodedPwd, University university) {
         return User.builder()
                 .email(this.email)
                 .pwd(encodedPwd)
