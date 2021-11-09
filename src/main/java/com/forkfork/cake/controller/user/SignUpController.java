@@ -94,6 +94,7 @@ public class SignUpController {
              signUpRequest.getGive()) {
             Category categoryById = categoryService.findCategoryById(giveId);
             UserCategory userCategory = UserCategory.builder().category(categoryById).user(user).type(1).build();
+
             userCategoryService.saveUserCategory(userCategory);
         }
 
@@ -101,6 +102,7 @@ public class SignUpController {
                 signUpRequest.getTake()) {
             Category categoryById = categoryService.findCategoryById(takeId);
             UserCategory userCategory = UserCategory.builder().category(categoryById).user(user).type(2).build();
+
             userCategoryService.saveUserCategory(userCategory);
         }
 

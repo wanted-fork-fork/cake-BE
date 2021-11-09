@@ -34,6 +34,7 @@ jasypt:
 
 KEY:
   JWT: ENC(L+Da2qqjOez9Vi6plXZg5YqXmLHTcj+g)
+  AES128 : ENC(LCF5IYuQ0W4SkwNM1nfCyDmMRg1S+vyu2srLWZ3uTqg=)
 
 cloud:
   aws:
