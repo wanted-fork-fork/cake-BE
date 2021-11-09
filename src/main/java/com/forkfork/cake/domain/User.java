@@ -52,6 +52,9 @@ public class User {
     private List<UserCategory> userCategoryList = new LinkedList<>();
 
     public void addUserCategory(UserCategory category) {
+        if (userCategoryList == null) {
+            userCategoryList = new LinkedList<>();
+        }
         userCategoryList.add(category);
         category.setUser(this);
     }
@@ -60,6 +63,9 @@ public class User {
     private List<Study> studyList = new LinkedList<>();
 
     public void addStudy(Study study) {
+        if (studyList == null) {
+            studyList = new LinkedList<>();
+        }
         studyList.add(study);
         study.setUser(this);
     }
@@ -68,6 +74,9 @@ public class User {
     private List<PointRecord> pointRecordList = new LinkedList<>();
 
     public void addPointRecord(PointRecord pointRecord) {
+        if (pointRecordList == null) {
+            pointRecordList = new LinkedList<>();
+        }
         pointRecordList.add(pointRecord);
         pointRecord.setUser(this);
     }
@@ -76,6 +85,9 @@ public class User {
     private List<StudyMember> studyMemberList = new LinkedList<>();
 
     public void addStudyMember(StudyMember studyMember) {
+        if (studyMemberList == null) {
+            studyMemberList = new LinkedList<>();
+        }
         studyMemberList.add(studyMember);
         studyMember.setUser(this);
     }
@@ -87,6 +99,12 @@ public class User {
     private List<Review> toReviewList = new LinkedList<>();
 
     public void addReview(Review review) {
+        if (fromReviewList == null) {
+            fromReviewList = new LinkedList<>();
+        }
+        if (toReviewList == null) {
+            toReviewList = new LinkedList<>();
+        }
         fromReviewList.add(review);
         review.setFromUser(this);
 
@@ -102,6 +120,12 @@ public class User {
     private List<PointDeal> toUserList = new LinkedList<>();
 
     public void addPointDeal(PointDeal pointDeal) {
+        if (fromUserList == null) {
+            fromUserList = new LinkedList<>();
+        }
+        if (toUserList == null) {
+            toUserList = new LinkedList<>();
+        }
         fromUserList.add(pointDeal);
         pointDeal.setFromUser(this);
 
