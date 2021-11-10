@@ -88,22 +88,24 @@ public class SignUpController {
         University university = universityService.findUnivById(signUpRequest.getUniv());
 
         User user = signUpRequest.toUserEntity(encodedPwd, university);
-        userService.saveUser(user);
 
         for (Long giveId:
              signUpRequest.getGive()) {
             Category categoryById = categoryService.findCategoryById(giveId);
             UserCategory userCategory = UserCategory.builder().category(categoryById).user(user).type(1).build();
-            userCategoryService.saveUserCategory(userCategory);
+
+            user.addUserCategory(userCategory);
         }
 
         for (Long takeId:
                 signUpRequest.getTake()) {
             Category categoryById = categoryService.findCategoryById(takeId);
             UserCategory userCategory = UserCategory.builder().category(categoryById).user(user).type(2).build();
-            userCategoryService.saveUserCategory(userCategory);
+
+            user.addUserCategory(userCategory);
         }
 
+        userService.saveUser(user);
 
         return ResFormat.response(true, 201, "유저 생성을 완료했습니다.");
 

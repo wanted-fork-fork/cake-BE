@@ -36,11 +36,16 @@ public class Study {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
+    // kakaoMap location id
     private String location;
 
     private Long peopleCnt;
 
     private boolean earlyClosing;
+
+    private String chatRoom;
+
+    private String roomPwd;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
@@ -59,6 +64,9 @@ public class Study {
     private List<StudyCategory> studyCategoryList = new LinkedList<>();
 
     public void addStudyCategory(StudyCategory studyCategory) {
+        if (studyCategoryList == null) {
+            studyCategoryList = new LinkedList<>();
+        }
         studyCategoryList.add(studyCategory);
         studyCategory.setStudy(this);
     }
@@ -67,8 +75,12 @@ public class Study {
     private List<StudyFile> studyFileList = new LinkedList<>();
 
     public void addStudyFile(StudyFile studyFile) {
+        if (studyFileList == null) {
+            studyFileList = new LinkedList<>();
+        }
         studyFileList.add(studyFile);
         studyFile.setStudy(this);
+
     }
 
     @OneToOne(mappedBy = "study", cascade = CascadeType.ALL)

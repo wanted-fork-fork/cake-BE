@@ -31,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> paths = new LinkedList<>();
         paths.add("/test");
+        paths.add("/study/**");
 
         registry.addInterceptor(jwtTokenInterceptor).addPathPatterns(paths);
 //                .excludePathPatterns(excludePaths);
