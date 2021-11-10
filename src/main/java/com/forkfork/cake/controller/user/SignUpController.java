@@ -1,10 +1,7 @@
 package com.forkfork.cake.controller.user;
 
 import com.forkfork.cake.domain.*;
-import com.forkfork.cake.dto.signup.request.ConfirmCertificationReqeust;
-import com.forkfork.cake.dto.signup.request.OverlapEmailReqeust;
-import com.forkfork.cake.dto.signup.request.SendCertificationReqeust;
-import com.forkfork.cake.dto.signup.request.SignUpRequest;
+import com.forkfork.cake.dto.signup.request.*;
 import com.forkfork.cake.dto.signup.response.FindAllUniversityResponse;
 import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.ResFormat;
@@ -71,7 +68,7 @@ public class SignUpController {
         }
     }
 
-    @PostMapping("/overlap")
+    @PostMapping("/overlap/email")
     public ResponseEntity<Object> checkOverlapEmail(@RequestBody OverlapEmailReqeust overlapEmailReqeust) {
         User userByEmail = userService.findUserByEmail(overlapEmailReqeust.getEmail());
 
@@ -79,6 +76,16 @@ public class SignUpController {
             return ResFormat.response(true, 200, "중복된 이메일이 없습니다.");
         }
         return ResFormat.response(true, 400, "중복된 이메일입니다.");
+    }
+
+    @PostMapping("/overlap/nickname")
+    public ResponseEntity<Object> checkOverlapNickname(@RequestBody OverlapNicknameReqeust overlapNicknameReqeust) {
+        User userByNickname = userService.findUserByNickname(overlapNicknameReqeust.getNickname());
+
+        if (userByNickname == null) {
+            return ResFormat.response(true, 200, "중복된 닉네임이 없습니다.");
+        }
+        return ResFormat.response(true, 400, "중복된 닉네임입니다.");
     }
 
     @PostMapping
