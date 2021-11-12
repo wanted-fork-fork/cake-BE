@@ -67,13 +67,47 @@ public class PagingController {
         return ResFormat.response(true, 200, pagingResponseList);
     }
 
-//    @GetMapping
-//    public ResponseEntity<Object> findFilterStudy(@RequestParam int page, @RequestParam Long give, @RequestParam Long take, @RequestParam int type) {
-//        Category giveCategory = categoryService.findCategoryById(give);
-//        Category takeCategory = categoryService.findCategoryById(take);
-//
-//        List<StudyCategory> studyCategoryByCategory = studyCategoryService.findStudyCategoryByCategory(giveCategory);
-//    }
+    @GetMapping("/filter")
+    public ResponseEntity<Object> findFilterStudy(@RequestParam int page, @RequestParam Long give, @RequestParam Long take, @RequestParam int type) {
+
+        PageRequest pageRequest = PageRequest.of(page, 20);
+        List<StudyCategory> studyCategoryByCategory = studyCategoryService.findStudyByfiltering(give, take, pageRequest);
+
+        List<PagingResponse> pagingResponseList = new LinkedList<>();
+        for (StudyCategory curStudy:
+             studyCategoryByCategory) {
+            Study study = curStudy.getStudy();
+
+            if ((study.getStartDate() != null && study.getStartDate().before(new Date())) || study.getEarlyClosing() || study.getType() != type) {
+                continue;
+            }
+
+            List<StudyCategory> studyCategories = studyCategoryService.findStudyCategoryByStudy(study);
+            List<String> giveCategory = new LinkedList<>();
+            List<String> takeCategory = new LinkedList<>();
+            String img = null;
+
+            for (StudyCategory studyCategory:
+                    studyCategories) {
+                if (studyCategory.getType() == 1) {
+                    //give
+                    giveCategory.add(studyCategory.getCategory().getName());
+                } else {
+                    takeCategory.add(studyCategory.getCategory().getName());
+                    img = studyCategory.getCategory().getImg();
+                }
+            }
+
+            List<StudyFile> studyFileByStudy = studyFileService.findStudyFileByStudy(study);
+            if (!studyFileByStudy.isEmpty()) {
+                img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
+            }
+            PagingResponse pagingResponse = new PagingResponse(study, img, giveCategory, takeCategory);
+            pagingResponseList.add(pagingResponse);
+        }
+
+        return ResFormat.response(true, 200, pagingResponseList);
+    }
 
     @PostMapping("/test")
     public String test() {

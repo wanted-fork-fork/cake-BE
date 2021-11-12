@@ -5,6 +5,8 @@ import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.domain.StudyCategory;
 import com.forkfork.cake.repository.StudyCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,5 +22,9 @@ public class StudyCategoryService {
 
     public List<StudyCategory> findStudyCategoryByCategory(Category giveCategory) {
         return studyCategoryRepository.findByCategory(giveCategory);
+    }
+
+    public List<StudyCategory> findStudyByfiltering(Long give, Long take, Pageable pageRequest) {
+        return studyCategoryRepository.findStudyByfiltering(give, take, pageRequest);
     }
 }
