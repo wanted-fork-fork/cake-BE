@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class PagingResponse {
+    Long id;
     String title;
     Long peopleCnt;
     Date startDate;
@@ -19,6 +20,7 @@ public class PagingResponse {
     String img;
 
     public PagingResponse(Study study, String img, List<String> give, List<String> take) {
+        this.id = study.getId();
         this.title = study.getTitle();
         this.peopleCnt = study.getPeopleCnt();
         this.startDate = study.getStartDate();

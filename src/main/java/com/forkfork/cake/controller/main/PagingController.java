@@ -6,10 +6,7 @@ import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.domain.StudyCategory;
 import com.forkfork.cake.domain.StudyFile;
 import com.forkfork.cake.dto.paging.response.PagingResponse;
-import com.forkfork.cake.service.S3Service;
-import com.forkfork.cake.service.StudyCategoryService;
-import com.forkfork.cake.service.StudyFileService;
-import com.forkfork.cake.service.StudyService;
+import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +14,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +26,7 @@ public class PagingController {
     private final StudyFileService studyFileService;
     private final S3Service s3Service;
     private final StudyCategoryService studyCategoryService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public ResponseEntity<Object> findAllStudy(@RequestParam int page) {
@@ -37,6 +36,10 @@ public class PagingController {
         List<PagingResponse> pagingResponseList = new LinkedList<>();
         for (Study study:
              studySlice) {
+            if ((study.getStartDate() != null && study.getStartDate().before(new Date())) || study.getEarlyClosing()) {
+                continue;
+            }
+
             List<StudyCategory> studyCategories = studyCategoryService.findStudyCategoryByStudy(study);
             List<String> give = new LinkedList<>();
             List<String> take = new LinkedList<>();
@@ -63,6 +66,14 @@ public class PagingController {
 
         return ResFormat.response(true, 200, pagingResponseList);
     }
+
+//    @GetMapping
+//    public ResponseEntity<Object> findFilterStudy(@RequestParam int page, @RequestParam Long give, @RequestParam Long take, @RequestParam int type) {
+//        Category giveCategory = categoryService.findCategoryById(give);
+//        Category takeCategory = categoryService.findCategoryById(take);
+//
+//        List<StudyCategory> studyCategoryByCategory = studyCategoryService.findStudyCategoryByCategory(giveCategory);
+//    }
 
     @PostMapping("/test")
     public String test() {
