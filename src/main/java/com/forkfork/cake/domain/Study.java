@@ -51,6 +51,8 @@ public class Study {
 
     private String roomPwd;
 
+    private Boolean cancellation;
+
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date createdAt;

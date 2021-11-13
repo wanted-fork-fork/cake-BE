@@ -124,4 +124,9 @@ public class StudyController {
 
         return ResFormat.response(true, 200, findStudyDetailResponse);
     }
+
+//    @PostMapping("/apply")
+//    public ResponseEntity<Object> applyStudy(HttpServletRequest request, @RequestParam Long id) {
+////       예외. 이미 신청한 사람은 신청 못함
+//    }
 }
