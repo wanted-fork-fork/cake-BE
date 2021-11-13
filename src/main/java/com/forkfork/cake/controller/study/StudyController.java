@@ -1,6 +1,7 @@
 package com.forkfork.cake.controller.study;
 
 import com.forkfork.cake.domain.*;
+import com.forkfork.cake.dto.study.request.ApplyStudyRequest;
 import com.forkfork.cake.dto.study.request.SaveStudyRequest;
 import com.forkfork.cake.dto.study.response.FindStudyDetailResponse;
 import com.forkfork.cake.dto.study.response.UserInformationDto;
@@ -120,13 +121,40 @@ public class StudyController {
             }
         }
 
-        FindStudyDetailResponse findStudyDetailResponse = new FindStudyDetailResponse(studyById, userInformation, give, take, images);
+        Boolean apply = true;
+
+        List<StudyMember> studyMemberByStudy = studyMemberService.findStudyMemberByStudy(studyById);
+
+        for (StudyMember studyMember:
+             studyMemberByStudy) {
+            if (studyMember.getUser().getEmail().equals(user.getEmail())) {
+                apply = false;
+            }
+        }
+
+        FindStudyDetailResponse findStudyDetailResponse = new FindStudyDetailResponse(studyById, userInformation, give, take, images, apply);
 
         return ResFormat.response(true, 200, findStudyDetailResponse);
     }
 
-//    @PostMapping("/apply")
-//    public ResponseEntity<Object> applyStudy(HttpServletRequest request, @RequestParam Long id) {
-////       예외. 이미 신청한 사람은 신청 못함
-//    }
+    @PostMapping("/apply")
+    public ResponseEntity<Object> applyStudy(HttpServletRequest request, @RequestBody ApplyStudyRequest applyStudyRequest) {
+//       예외. 이미 신청한 사람은 신청 못함
+        String email = jwtTokenUtil.getSubject(request);
+        User userByEmail = userService.findUserByEmail(email);
+
+        Study studyById = studyService.findStudyById(applyStudyRequest.getId());
+
+        StudyMember studyMember = StudyMember.builder().study(studyById).user(userByEmail).state(2).msg(applyStudyRequest.getContent()).build();
+
+        for (String img:
+             applyStudyRequest.getImages()) {
+            ApplyFile applyFile = ApplyFile.builder().file(img).studyMember(studyMember).build();
+            studyMember.addApplyFile(applyFile);
+        }
+
+        studyMemberService.saveStudyMember(studyMember);
+
+        return ResFormat.response(true, 201, "참여 신청을 완료했습니다.");
+    }
 }
