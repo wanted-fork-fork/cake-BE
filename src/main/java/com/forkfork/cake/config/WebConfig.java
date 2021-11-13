@@ -32,6 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
         List<String> paths = new LinkedList<>();
         paths.add("/test");
         paths.add("/study/**");
+        paths.add("/page/**");
 
         registry.addInterceptor(jwtTokenInterceptor).addPathPatterns(paths);
 //                .excludePathPatterns(excludePaths);
