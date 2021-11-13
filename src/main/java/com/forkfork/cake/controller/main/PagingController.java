@@ -9,14 +9,13 @@ import com.forkfork.cake.dto.paging.response.PagingResponse;
 import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class PagingController {
     @GetMapping
     public ResponseEntity<Object> findAllStudy(@RequestParam int page) {
         PageRequest pageRequest = PageRequest.of(page, 20);
-        Slice<Study> studySlice = studyService.findStudyAll(pageRequest);
+        Page<Study> studySlice = studyService.findStudyAll(pageRequest);
 
         List<PagingResponse> pagingResponseList = new LinkedList<>();
         for (Study study:
@@ -64,14 +63,18 @@ public class PagingController {
             pagingResponseList.add(pagingResponse);
         }
 
-        return ResFormat.response(true, 200, pagingResponseList);
+        Map<String, Object> res = new LinkedHashMap<>();
+        res.put("study", pagingResponseList);
+        res.put("totalPage", studySlice.getTotalPages());
+
+        return ResFormat.response(true, 200, res);
     }
 
     @GetMapping("/filter")
     public ResponseEntity<Object> findFilterStudy(@RequestParam int page, @RequestParam Long give, @RequestParam Long take, @RequestParam int type) {
 
         PageRequest pageRequest = PageRequest.of(page, 20);
-        List<StudyCategory> studyCategoryByCategory = studyCategoryService.findStudyByfiltering(give, take, pageRequest);
+        Page<StudyCategory> studyCategoryByCategory = studyCategoryService.findStudyByfiltering(give, take, pageRequest);
 
         List<PagingResponse> pagingResponseList = new LinkedList<>();
         for (StudyCategory curStudy:
@@ -106,7 +109,11 @@ public class PagingController {
             pagingResponseList.add(pagingResponse);
         }
 
-        return ResFormat.response(true, 200, pagingResponseList);
+        Map<String, Object> res = new LinkedHashMap<>();
+        res.put("study", pagingResponseList);
+        res.put("totalPage", studyCategoryByCategory.getTotalPages());
+
+        return ResFormat.response(true, 200, res);
     }
 
     @PostMapping("/test")
