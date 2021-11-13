@@ -92,7 +92,7 @@ public class StudyController {
             point += review.getReviewPoint();
         }
 
-        if (cnt != 0) {
+        if (cnt >= 5) {
             rate = point / cnt;
         }
 
