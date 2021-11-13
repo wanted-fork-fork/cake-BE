@@ -46,6 +46,7 @@ public class SaveStudyRequest {
                 .earlyClosing(false)
                 .chatRoom(this.chatRoom)
                 .roomPwd(pwd)
+                .cancellation(false)
                 .build();
     }
 

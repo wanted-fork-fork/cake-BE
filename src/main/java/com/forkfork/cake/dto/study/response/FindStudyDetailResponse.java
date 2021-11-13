@@ -20,9 +20,10 @@ public class FindStudyDetailResponse {
     List<String> take;
     String location;
     String content;
+    Boolean apply;
 
 
-    public FindStudyDetailResponse(Study studyById, UserInformationDto userInformation, List<String> give, List<String> take, List<String> images) {
+    public FindStudyDetailResponse(Study studyById, UserInformationDto userInformation, List<String> give, List<String> take, List<String> images, Boolean apply) {
         this.id = studyById.getId();
         this.images = images;
         this.user = userInformation;
@@ -35,5 +36,6 @@ public class FindStudyDetailResponse {
         this.location = studyById.getLocation();
         this.content = studyById.getContent();
         this.peopleCnt = studyById.getPeopleCnt();
+        this.apply = apply;
     }
 }

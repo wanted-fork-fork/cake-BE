@@ -41,7 +41,7 @@ public class PagingController {
         for (Study study:
              studySlice) {
 
-            if ((study.getStartDate() != null && study.getStartDate().before(new Date())) || study.getEarlyClosing() || (study.getUser() == null || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName()))) {
+            if ((study.getStartDate() != null && study.getStartDate().before(new Date())) || study.getCancellation() || study.getEarlyClosing() || (study.getUser() == null || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName()))) {
                 continue;
             }
 
@@ -89,7 +89,7 @@ public class PagingController {
              studyCategoryByCategory) {
             Study study = curStudy.getStudy();
 
-            if ((study.getStartDate() != null && study.getStartDate().before(new Date())) || study.getEarlyClosing() || study.getType() != type || (study.getUser() == null || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName()))) {
+            if ((study.getStartDate() != null && study.getStartDate().before(new Date())) || study.getCancellation() || study.getEarlyClosing() || study.getType() != type || (study.getUser() == null || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName()))) {
                 continue;
             }
 

@@ -10,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -43,4 +45,15 @@ public class StudyMember {
     @ManyToOne
     @JoinColumn
     private User user;
+
+    @OneToMany(mappedBy = "studyMember", cascade = CascadeType.ALL)
+    List<ApplyFile> applyFileList = new LinkedList<>();
+
+    public void addApplyFile(ApplyFile applyFile) {
+        if (applyFileList == null) {
+            applyFileList = new LinkedList<>();
+        }
+        applyFileList.add(applyFile);
+        applyFile.setStudyMember(this);
+    }
 }
