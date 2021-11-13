@@ -3,6 +3,8 @@ package com.forkfork.cake.service;
 import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,5 +15,9 @@ public class StudyService {
 
     public Study saveStudy(Study study) {
         return studyRepository.save(study);
+    }
+
+    public Slice<Study> findStudyAll(PageRequest pageRequest) {
+        return studyRepository.findAll(pageRequest);
     }
 }

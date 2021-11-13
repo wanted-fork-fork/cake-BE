@@ -43,6 +43,10 @@ public class Study {
 
     private boolean earlyClosing;
 
+    public boolean getEarlyClosing() {
+        return this.earlyClosing;
+    }
+
     private String chatRoom;
 
     private String roomPwd;
