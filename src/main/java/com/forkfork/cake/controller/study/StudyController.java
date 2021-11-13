@@ -3,6 +3,7 @@ package com.forkfork.cake.controller.study;
 import com.forkfork.cake.domain.*;
 import com.forkfork.cake.dto.study.request.SaveStudyRequest;
 import com.forkfork.cake.service.CategoryService;
+import com.forkfork.cake.service.StudyMemberService;
 import com.forkfork.cake.service.StudyService;
 import com.forkfork.cake.service.UserService;
 import com.forkfork.cake.util.AES128Encoder;
@@ -23,6 +24,7 @@ public class StudyController {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final StudyMemberService studyMemberService;
 
 
     @Value("${KEY.AES128}")
@@ -60,6 +62,9 @@ public class StudyController {
         }
 
         Study savedStudy = studyService.saveStudy(study);
+        StudyMember studyMember = StudyMember.builder().study(savedStudy).user(userByEmail).state(1).build();
+
+        studyMemberService.saveStudyMember(studyMember);
 
         return ResFormat.response(true, 201, "스터디 생성을 완료했습니다.");
 

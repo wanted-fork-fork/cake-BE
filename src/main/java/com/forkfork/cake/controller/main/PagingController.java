@@ -1,7 +1,5 @@
 package com.forkfork.cake.controller.main;
 
-import com.amazonaws.Response;
-import com.forkfork.cake.domain.Category;
 import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.domain.StudyCategory;
 import com.forkfork.cake.domain.StudyFile;
@@ -11,7 +9,6 @@ import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
