@@ -21,4 +21,8 @@ public class StudyService {
     public Page<Study> findStudyAll(PageRequest pageRequest) {
         return studyRepository.findAll(pageRequest);
     }
+
+    public Study findStudyById(Long id) {
+        return studyRepository.findById(id).orElse(null);
+    }
 }
