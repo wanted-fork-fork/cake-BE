@@ -3,6 +3,7 @@ package com.forkfork.cake.service;
 import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,11 @@ public class StudyService {
         return studyRepository.save(study);
     }
 
-    public Slice<Study> findStudyAll(PageRequest pageRequest) {
+    public Page<Study> findStudyAll(PageRequest pageRequest) {
         return studyRepository.findAll(pageRequest);
+    }
+
+    public Study findStudyById(Long id) {
+        return studyRepository.findById(id).orElse(null);
     }
 }
