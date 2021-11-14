@@ -18,7 +18,7 @@ public class FindOtherStudyResponse {
     List<String> take;
     String img;
     int state;
-    UserInformationDto userInformationDto;
+    UserInformationDto user;
 
     public FindOtherStudyResponse(Study study, List<String> give, List<String> take, String img) {
         this.id = study.getId();
@@ -32,7 +32,7 @@ public class FindOtherStudyResponse {
     }
 
     public void updateUserInfo(UserInformationDto userInformationDto) {
-        this.userInformationDto = userInformationDto;
+        this.user = userInformationDto;
     }
     public void updateMyType(StudyMember studyMember) {
         this.state = studyMember.getState();
