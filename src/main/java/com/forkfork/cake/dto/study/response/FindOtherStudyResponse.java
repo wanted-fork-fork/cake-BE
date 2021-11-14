@@ -26,6 +26,9 @@ public class FindOtherStudyResponse {
         this.peopleCnt = study.getPeopleCnt();
         this.startDate = study.getStartDate();
         this.endDate = study.getEndDate();
+        this.give = give;
+        this.take = take;
+        this.img = img;
     }
 
     public void updateUserInfo(UserInformationDto userInformationDto) {

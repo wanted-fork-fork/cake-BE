@@ -25,6 +25,9 @@ public class FindMyStudyResponse {
         this.peopleCnt = study.getPeopleCnt();
         this.startDate = study.getStartDate();
         this.endDate = study.getEndDate();
+        this.give = give;
+        this.take = take;
+        this.img = img;
     }
 
     public void updateMyType(StudyMember studyMember) {
