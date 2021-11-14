@@ -40,8 +40,8 @@ public class PagingController {
         List<PagingResponse> pagingResponseList = new LinkedList<>();
         for (Study study:
              studySlice) {
-
-            if ((study.getStartDate() != null && study.getStartDate().before(new Date())) || study.getCancellation() || study.getEarlyClosing() || (study.getUser() == null || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName()))) {
+//            1. 시간지남, 2. 취소됨 3. 조기마감
+            if ( !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
                 continue;
             }
 
@@ -89,7 +89,7 @@ public class PagingController {
              studyCategoryByCategory) {
             Study study = curStudy.getStudy();
 
-            if ((study.getStartDate() != null && study.getStartDate().before(new Date())) || study.getCancellation() || study.getEarlyClosing() || study.getType() != type || (study.getUser() == null || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName()))) {
+            if ( study.getType() != type || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
                 continue;
             }
 
