@@ -28,6 +28,9 @@ public class University {
     private List<User> userList = new LinkedList<>();
 
     public void addUser(User user) {
+        if (userList == null) {
+            userList = new LinkedList<>();
+        }
         userList.add(user);
         user.setUniversity(this);
     }

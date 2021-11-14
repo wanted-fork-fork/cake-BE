@@ -22,7 +22,6 @@ public class Auth {
     @JoinColumn
     private User user;
 
-
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
