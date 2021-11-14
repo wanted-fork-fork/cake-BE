@@ -78,7 +78,10 @@ public class StudyController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> findStudyDetail(@RequestParam Long id) {
+    public ResponseEntity<Object> findStudyDetail(HttpServletRequest request, @RequestParam Long id) {
+        String email = jwtTokenUtil.getSubject(request);
+        User userByEmail = userService.findUserByEmail(email);
+
         Study studyById = studyService.findStudyById(id);
         User user = studyById.getUser();
 
@@ -132,7 +135,9 @@ public class StudyController {
 
         for (StudyMember studyMember :
                 studyMemberByStudy) {
-            if (studyMember.getUser().getEmail().equals(user.getEmail())) {
+            if (studyMember.getUser().getEmail().equals(userByEmail.getEmail())) {
+                System.out.println("studyMember.getUser().getEmail() = " + studyMember.getUser().getEmail());
+                System.out.println("studyById = " + studyById.getId());
                 apply = false;
             }
         }
