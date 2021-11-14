@@ -89,6 +89,15 @@ public class Study {
 
     }
 
-    @OneToOne(mappedBy = "study", cascade = CascadeType.ALL)
-    private StudyMember studyMember;
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
+    private List<StudyMember> studyMemberList = new LinkedList<>();
+
+    public void addStudyMember(StudyMember studyMember) {
+        if (studyMemberList == null) {
+            studyMemberList = new LinkedList<>();
+        }
+        studyMemberList.add(studyMember);
+        studyMember.setStudy(this);
+
+    }
 }

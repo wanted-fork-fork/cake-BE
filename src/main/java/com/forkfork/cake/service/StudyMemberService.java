@@ -2,6 +2,7 @@ package com.forkfork.cake.service;
 
 import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.domain.StudyMember;
+import com.forkfork.cake.domain.User;
 import com.forkfork.cake.repository.StudyCategoryRepository;
 import com.forkfork.cake.repository.StudyMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,13 @@ public class StudyMemberService {
     public List<StudyMember> findStudyMemberByStudy(Study studyById) {
 
         return studyMemberRepository.findAllByStudy(studyById);
+    }
+
+    public List<StudyMember> findAllByUser(User user) {
+        return studyMemberRepository.findAllByUser(user);
+    }
+
+    public List<StudyMember> findStudyMemberByUserAndState(User userByEmail, int state) {
+        return studyMemberRepository.findAllByUserAndState(userByEmail, state);
     }
 }
