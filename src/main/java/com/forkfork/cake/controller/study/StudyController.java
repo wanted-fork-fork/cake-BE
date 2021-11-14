@@ -4,6 +4,7 @@ import com.forkfork.cake.domain.*;
 import com.forkfork.cake.dto.study.request.ApplyStudyRequest;
 import com.forkfork.cake.dto.study.request.SaveStudyRequest;
 import com.forkfork.cake.dto.study.response.FindMyStudyResponse;
+import com.forkfork.cake.dto.study.response.FindOtherStudyResponse;
 import com.forkfork.cake.dto.study.response.FindStudyDetailResponse;
 import com.forkfork.cake.dto.study.response.UserInformationDto;
 import com.forkfork.cake.service.*;
@@ -81,7 +82,10 @@ public class StudyController {
         Study studyById = studyService.findStudyById(id);
         User user = studyById.getUser();
 
-        String fileUrl = s3Service.getFileUrl(user.getImg());
+        String profileUrl = null;
+        if (user.getImg() != null) {
+            profileUrl = s3Service.getFileUrl(user.getImg());
+        }
 
         Double rate = null;
         List<Review> allReviewByToUser = reviewService.findAllReviewByToUser(user);
@@ -98,7 +102,7 @@ public class StudyController {
             rate = point / cnt;
         }
 
-        UserInformationDto userInformation = new UserInformationDto(user, fileUrl, rate);
+        UserInformationDto userInformation = new UserInformationDto(user, profileUrl, rate);
 
         List<String> images = new LinkedList<>();
 
@@ -215,7 +219,7 @@ public class StudyController {
         studyMemberList.addAll(studyMembers);
         }
 
-        List<FindMyStudyResponse> findMyStudyResponses = new LinkedList<>();
+        List<FindOtherStudyResponse> findMyStudyResponses = new LinkedList<>();
 
         for (StudyMember studyMember:
                 studyMemberList) {
@@ -243,8 +247,31 @@ public class StudyController {
                 img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
             }
 
-            FindMyStudyResponse findMyStudy = new FindMyStudyResponse(study, give, take, img);
+            User ownerUser = study.getUser();
+            String profileUrl = null;
+            if (ownerUser.getImg() != null) {
+                profileUrl = s3Service.getFileUrl(ownerUser.getImg());
+            }
+            Double rate = null;
+            List<Review> allReviewByToUser = reviewService.findAllReviewByToUser(ownerUser);
+
+            Long cnt = 0L;
+            Double point = 0D;
+            for (Review review :
+                    allReviewByToUser) {
+                cnt += 1;
+                point += review.getReviewPoint();
+            }
+
+            if (cnt >= 5) {
+                rate = point / cnt;
+            }
+
+            UserInformationDto userInformationDto = new UserInformationDto(ownerUser, profileUrl, rate);
+
+            FindOtherStudyResponse findMyStudy = new FindOtherStudyResponse(study, give, take, img);
             findMyStudy.updateMyType(studyMember);
+            findMyStudy.updateUserInfo(userInformationDto);
             findMyStudyResponses.add(findMyStudy);
         }
 
