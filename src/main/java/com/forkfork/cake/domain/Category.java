@@ -26,17 +26,23 @@ public class Category {
     private String img;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    List<UserCategory> userCategoryList = new LinkedList<>();
+    private List<UserCategory> userCategoryList = new LinkedList<>();
 
     public void addUserCategory(UserCategory category) {
+        if (userCategoryList == null) {
+            userCategoryList = new LinkedList<>();
+        }
         userCategoryList.add(category);
         category.setCategory(this);
     }
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    List<StudyCategory> studyCategoryList = new LinkedList<>();
+    private List<StudyCategory> studyCategoryList = new LinkedList<>();
 
     public void addStudyCategory(StudyCategory studyCategory) {
+        if (studyCategoryList == null) {
+            studyCategoryList = new LinkedList<>();
+        }
         studyCategoryList.add(studyCategory);
         studyCategory.setCategory(this);
     }
