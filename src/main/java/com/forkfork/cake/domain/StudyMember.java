@@ -38,7 +38,7 @@ public class StudyMember {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn
     private Study study;
 
