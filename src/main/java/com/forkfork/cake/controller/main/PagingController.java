@@ -11,6 +11,7 @@ import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class PagingController {
         String email = jwtTokenUtil.getSubject(request);
         User userByEmail = userService.findUserByEmail(email);
 
-        PageRequest pageRequest = PageRequest.of(page, 20);
+        PageRequest pageRequest = PageRequest.of(page, 20, Sort.by("id").descending());
         Page<Study> studySlice = studyService.findStudyAll(pageRequest);
 
         List<PagingResponse> pagingResponseList = new LinkedList<>();
@@ -81,7 +82,7 @@ public class PagingController {
         String email = jwtTokenUtil.getSubject(request);
         User userByEmail = userService.findUserByEmail(email);
 
-        PageRequest pageRequest = PageRequest.of(page, 20);
+        PageRequest pageRequest = PageRequest.of(page, 20, Sort.by("id").descending());
         Page<StudyCategory> studyCategoryByCategory = studyCategoryService.findStudyByfiltering(give, take, pageRequest);
 
         List<PagingResponse> pagingResponseList = new LinkedList<>();
