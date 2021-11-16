@@ -11,6 +11,7 @@ import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,38 +35,18 @@ public class PagingController {
         String email = jwtTokenUtil.getSubject(request);
         User userByEmail = userService.findUserByEmail(email);
 
-        PageRequest pageRequest = PageRequest.of(page, 20);
+        PageRequest pageRequest = PageRequest.of(page, 20, Sort.by("id").descending());
         Page<Study> studySlice = studyService.findStudyAll(pageRequest);
 
         List<PagingResponse> pagingResponseList = new LinkedList<>();
         for (Study study:
              studySlice) {
 //            1. 시간지남, 2. 취소됨 3. 조기마감
-            if ( !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
+            if ( study.getCancellation() || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
                 continue;
             }
 
-            List<StudyCategory> studyCategories = studyCategoryService.findStudyCategoryByStudy(study);
-            List<String> give = new LinkedList<>();
-            List<String> take = new LinkedList<>();
-            String img = null;
-
-            for (StudyCategory studyCategory:
-                 studyCategories) {
-                if (studyCategory.getType() == 1) {
-                    //give
-                    give.add(studyCategory.getCategory().getName());
-                } else {
-                    take.add(studyCategory.getCategory().getName());
-                    img = studyCategory.getCategory().getImg();
-                }
-            }
-
-            List<StudyFile> studyFileByStudy = studyFileService.findStudyFileByStudy(study);
-            if (!studyFileByStudy.isEmpty()) {
-                img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
-            }
-            PagingResponse pagingResponse = new PagingResponse(study, img, give, take);
+            PagingResponse pagingResponse = studyService.makePagingResponseByStudy(study);
             pagingResponseList.add(pagingResponse);
         }
 
@@ -81,39 +62,18 @@ public class PagingController {
         String email = jwtTokenUtil.getSubject(request);
         User userByEmail = userService.findUserByEmail(email);
 
-        PageRequest pageRequest = PageRequest.of(page, 20);
+        PageRequest pageRequest = PageRequest.of(page, 20, Sort.by("id").descending());
         Page<StudyCategory> studyCategoryByCategory = studyCategoryService.findStudyByfiltering(give, take, pageRequest);
-
+        
         List<PagingResponse> pagingResponseList = new LinkedList<>();
         for (StudyCategory curStudy:
              studyCategoryByCategory) {
             Study study = curStudy.getStudy();
-
-            if ( study.getType() != type || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
+            if ( study.getCancellation() || study.getType() != type || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
                 continue;
             }
 
-            List<StudyCategory> studyCategories = studyCategoryService.findStudyCategoryByStudy(study);
-            List<String> giveCategory = new LinkedList<>();
-            List<String> takeCategory = new LinkedList<>();
-            String img = null;
-
-            for (StudyCategory studyCategory:
-                    studyCategories) {
-                if (studyCategory.getType() == 1) {
-                    //give
-                    giveCategory.add(studyCategory.getCategory().getName());
-                } else {
-                    takeCategory.add(studyCategory.getCategory().getName());
-                    img = studyCategory.getCategory().getImg();
-                }
-            }
-
-            List<StudyFile> studyFileByStudy = studyFileService.findStudyFileByStudy(study);
-            if (!studyFileByStudy.isEmpty()) {
-                img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
-            }
-            PagingResponse pagingResponse = new PagingResponse(study, img, giveCategory, takeCategory);
+            PagingResponse pagingResponse = studyService.makePagingResponseByStudy(study);
             pagingResponseList.add(pagingResponse);
         }
 
@@ -124,13 +84,4 @@ public class PagingController {
         return ResFormat.response(true, 200, res);
     }
 
-    @PostMapping("/test")
-    public String test() {
-        for (int i = 0; i < 50; i++) {
-            Study build = Study.builder().title(i + "번째 테스트 글").build();
-            studyService.saveStudy(build);
-        }
-
-        return "good";
-    }
 }
