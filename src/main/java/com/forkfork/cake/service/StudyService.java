@@ -48,7 +48,6 @@ public class StudyService {
                 give.add(studyCategory.getCategory().getName());
             } else {
                 take.add(studyCategory.getCategory().getName());
-                img = studyCategory.getCategory().getImg();
             }
         }
 
@@ -56,6 +55,8 @@ public class StudyService {
         if (!studyFileByStudy.isEmpty()) {
             img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
         }
+        
+//        img가 null이면 take 개수로 기본 이미지 삽입
 
         return new PagingResponse(study, img, give, take);
     }

@@ -1,6 +1,7 @@
 package com.forkfork.cake.controller.study;
 
 import com.forkfork.cake.domain.*;
+import com.forkfork.cake.dto.category.SeperateCategoryDto;
 import com.forkfork.cake.dto.study.request.ApplyStudyRequest;
 import com.forkfork.cake.dto.study.request.SaveStudyRequest;
 import com.forkfork.cake.dto.study.response.FindMyStudyResponse;
@@ -165,31 +166,18 @@ public class StudyController {
         for (StudyMember studyMember:
                 studyMemberByUserAndType) {
 
-            List<String> give = new LinkedList<>();
-            List<String> take = new LinkedList<>();
-            String img = null;
-
             Study study = studyMember.getStudy();
             List<StudyCategory> studyCategoryByStudy = studyCategoryService.findStudyCategoryByStudy(study);
 
-            for (StudyCategory studyCategory:
-                 studyCategoryByStudy) {
-                Category category = studyCategory.getCategory();
+            SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
 
-                if (studyCategory.getType() == 1) {
-                    give.add(category.getName());
-                } else {
-                    img = category.getImg();
-                    take.add(category.getName());
-                }
-            }
-
+            String img = null;
             List<StudyFile> studyFileByStudy = studyFileService.findStudyFileByStudy(study);
             if (!studyFileByStudy.isEmpty()) {
                 img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
             }
 
-            FindMyStudyResponse findMyStudy = new FindMyStudyResponse(study, give, take, img);
+            FindMyStudyResponse findMyStudy = new FindMyStudyResponse(study, seperateCategoryDto.getGive(), seperateCategoryDto.getTake(), img);
             findMyStudy.updateMyType(studyMember);
             findMyStudyResponses.add(findMyStudy);
         }
@@ -213,25 +201,14 @@ public class StudyController {
 
         for (StudyMember studyMember:
                 studyMemberList) {
-            List<String> give = new LinkedList<>();
-            List<String> take = new LinkedList<>();
-            String img = null;
+
 
             Study study = studyMember.getStudy();
             List<StudyCategory> studyCategoryByStudy = studyCategoryService.findStudyCategoryByStudy(study);
 
-            for (StudyCategory studyCategory:
-                    studyCategoryByStudy) {
-                Category category = studyCategory.getCategory();
+            SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
 
-                if (studyCategory.getType() == 1) {
-                    give.add(category.getName());
-                } else {
-                    img = category.getImg();
-                    take.add(category.getName());
-                }
-            }
-
+            String img = null;
             List<StudyFile> studyFileByStudy = studyFileService.findStudyFileByStudy(study);
             if (!studyFileByStudy.isEmpty()) {
                 img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
@@ -247,7 +224,7 @@ public class StudyController {
 
             UserInformationDto userInformationDto = new UserInformationDto(ownerUser, profileUrl, rate);
 
-            FindOtherStudyResponse findMyStudy = new FindOtherStudyResponse(study, give, take, img);
+            FindOtherStudyResponse findMyStudy = new FindOtherStudyResponse(study, seperateCategoryDto.getGive(), seperateCategoryDto.getTake(), img);
             findMyStudy.updateMyType(studyMember);
             findMyStudy.updateUserInfo(userInformationDto);
             findMyStudyResponses.add(findMyStudy);
