@@ -4,6 +4,7 @@ import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.domain.StudyCategory;
 import com.forkfork.cake.domain.StudyFile;
 import com.forkfork.cake.domain.User;
+import com.forkfork.cake.dto.category.SeperateCategoryDto;
 import com.forkfork.cake.dto.paging.response.PagingResponse;
 import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.JwtTokenUtil;
@@ -42,11 +43,19 @@ public class PagingController {
         for (Study study:
              studySlice) {
 //            1. 시간지남, 2. 취소됨 3. 조기마감
-            if ( study.getCancellation() || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
+            if ( study.getState() == 4 || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
                 continue;
             }
 
-            PagingResponse pagingResponse = studyService.makePagingResponseByStudy(study);
+            List<StudyCategory> studyCategoryByStudy = studyCategoryService.findStudyCategoryByStudy(study);
+            SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
+
+            String img = studyFileService.findThumbnailImg(study);
+            if (img == null) {
+                img = studyFileService.findThumbnailWithTakeSize(seperateCategoryDto.getTake().size());
+            }
+            PagingResponse pagingResponse = new PagingResponse(study, img, seperateCategoryDto.getGive(), seperateCategoryDto.getTake());
+
             pagingResponseList.add(pagingResponse);
         }
 
@@ -69,11 +78,20 @@ public class PagingController {
         for (StudyCategory curStudy:
              studyCategoryByCategory) {
             Study study = curStudy.getStudy();
-            if ( study.getCancellation() || study.getType() != type || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
+            if ( study.getState() == 4 || study.getType() != type || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
                 continue;
             }
 
-            PagingResponse pagingResponse = studyService.makePagingResponseByStudy(study);
+            List<StudyCategory> studyCategoryByStudy = studyCategoryService.findStudyCategoryByStudy(study);
+            SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
+
+            String img = studyFileService.findThumbnailImg(study);
+            if (img == null) {
+                img = studyFileService.findThumbnailWithTakeSize(seperateCategoryDto.getTake().size());
+            }
+
+            PagingResponse pagingResponse = new PagingResponse(study, img, seperateCategoryDto.getGive(), seperateCategoryDto.getTake());
+
             pagingResponseList.add(pagingResponse);
         }
 

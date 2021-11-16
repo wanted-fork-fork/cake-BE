@@ -19,6 +19,10 @@ public class SignUpRequest {
     List<Long> take;
 
     public User toUserEntity(String encodedPwd, University university) {
+        if (this.img == null) {
+            img = "default/default-profile.png";
+        }
+
         return User.builder()
                 .email(this.email)
                 .pwd(encodedPwd)

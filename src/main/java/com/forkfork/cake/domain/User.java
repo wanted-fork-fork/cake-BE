@@ -135,4 +135,8 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Auth auth;
+
+    @OneToOne(mappedBy = "user")
+    private ConsentForm consentForm;
+
 }

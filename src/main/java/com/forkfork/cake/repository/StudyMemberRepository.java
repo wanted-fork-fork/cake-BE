@@ -13,6 +13,6 @@ public interface StudyMemberRepository extends JpaRepository<StudyMember, Long> 
 
     List<StudyMember> findAllByUser(User user);
 
-    @Query("select s from StudyMember s where s.user=?1 and s.state=?2")
+    @Query("select s from StudyMember s where s.user=?1 and s.state=?2 order by s.id desc")
     List<StudyMember> findAllByUserAndState(User userByEmail, int state);
 }

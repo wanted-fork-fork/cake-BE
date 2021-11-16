@@ -18,7 +18,8 @@ public class FindStudyDetailResponse {
     Date endDate;
     List<String> give;
     List<String> take;
-    String location;
+    String storeName;
+    String storeAddress;
     String content;
     Boolean apply;
 
@@ -33,7 +34,8 @@ public class FindStudyDetailResponse {
         this.endDate = studyById.getEndDate();
         this.give = give;
         this.take = take;
-        this.location = studyById.getLocation();
+        this.storeName = studyById.getStoreName();
+        this.storeAddress = studyById.getStoreAddress();
         this.content = studyById.getContent();
         this.peopleCnt = studyById.getPeopleCnt();
         this.apply = apply;

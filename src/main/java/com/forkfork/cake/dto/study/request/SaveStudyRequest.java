@@ -19,7 +19,9 @@ public class SaveStudyRequest {
 
     private Date endDate;
 
-    private String location;
+    private String storeName;
+
+    private String storeAddress;
 
     private Long peopleCnt;
 
@@ -41,12 +43,12 @@ public class SaveStudyRequest {
                 .title(this.title)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
-                .location(this.location)
+                .storeAddress(this.storeAddress)
+                .storeName(this.storeName)
                 .peopleCnt(this.peopleCnt)
-                .earlyClosing(false)
                 .chatRoom(this.chatRoom)
                 .roomPwd(pwd)
-                .cancellation(false)
+                .state(1)
                 .build();
     }
 
