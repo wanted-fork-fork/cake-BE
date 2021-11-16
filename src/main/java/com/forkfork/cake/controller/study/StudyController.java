@@ -123,8 +123,6 @@ public class StudyController {
         for (StudyMember studyMember :
                 studyMemberByStudy) {
             if (studyMember.getUser().getEmail().equals(userByEmail.getEmail())) {
-                System.out.println("studyMember.getUser().getEmail() = " + studyMember.getUser().getEmail());
-                System.out.println("studyById = " + studyById.getId());
                 apply = false;
             }
         }
