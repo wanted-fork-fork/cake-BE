@@ -42,7 +42,7 @@ public class PagingController {
         for (Study study:
              studySlice) {
 //            1. 시간지남, 2. 취소됨 3. 조기마감
-            if ( !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
+            if ( study.getCancellation() || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
                 continue;
             }
 
@@ -69,7 +69,7 @@ public class PagingController {
         for (StudyCategory curStudy:
              studyCategoryByCategory) {
             Study study = curStudy.getStudy();
-            if ( study.getType() != type || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
+            if ( study.getCancellation() || study.getType() != type || !study.getUser().getUniversity().getName().equals(userByEmail.getUniversity().getName())) {
                 continue;
             }
 
