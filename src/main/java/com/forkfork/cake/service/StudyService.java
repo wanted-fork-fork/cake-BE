@@ -35,29 +35,4 @@ public class StudyService {
         return studyRepository.findById(id).orElse(null);
     }
 
-    public PagingResponse makePagingResponseByStudy(Study study) {
-        List<StudyCategory> studyCategories = studyCategoryService.findStudyCategoryByStudy(study);
-        List<String> give = new LinkedList<>();
-        List<String> take = new LinkedList<>();
-        String img = null;
-
-        for (StudyCategory studyCategory:
-                studyCategories) {
-            if (studyCategory.getType() == 1) {
-                //give
-                give.add(studyCategory.getCategory().getName());
-            } else {
-                take.add(studyCategory.getCategory().getName());
-            }
-        }
-
-        List<StudyFile> studyFileByStudy = studyFileService.findStudyFileByStudy(study);
-        if (!studyFileByStudy.isEmpty()) {
-            img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
-        }
-        
-//        img가 null이면 take 개수로 기본 이미지 삽입
-
-        return new PagingResponse(study, img, give, take);
-    }
 }

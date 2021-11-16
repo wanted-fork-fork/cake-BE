@@ -29,4 +29,13 @@ public class StudyFileService {
 
         return img;
     }
+
+    public String findThumbnailWithTakeSize(int size) {
+        if (size < 2) {
+            return "https://fork-fork-cake.s3.ap-northeast-2.amazonaws.com/thumbnail/piece.jpg";
+        } else {
+            return "https://fork-fork-cake.s3.ap-northeast-2.amazonaws.com/thumbnail/whole.jpg";
+        }
+    }
+
 }

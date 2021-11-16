@@ -51,7 +51,9 @@ public class PagingController {
             SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
 
             String img = studyFileService.findThumbnailImg(study);
-
+            if (img == null) {
+                img = studyFileService.findThumbnailWithTakeSize(seperateCategoryDto.getTake().size());
+            }
             PagingResponse pagingResponse = new PagingResponse(study, img, seperateCategoryDto.getGive(), seperateCategoryDto.getTake());
 
             pagingResponseList.add(pagingResponse);
@@ -80,7 +82,16 @@ public class PagingController {
                 continue;
             }
 
-            PagingResponse pagingResponse = studyService.makePagingResponseByStudy(study);
+            List<StudyCategory> studyCategoryByStudy = studyCategoryService.findStudyCategoryByStudy(study);
+            SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
+
+            String img = studyFileService.findThumbnailImg(study);
+            if (img == null) {
+                img = studyFileService.findThumbnailWithTakeSize(seperateCategoryDto.getTake().size());
+            }
+
+            PagingResponse pagingResponse = new PagingResponse(study, img, seperateCategoryDto.getGive(), seperateCategoryDto.getTake());
+
             pagingResponseList.add(pagingResponse);
         }
 

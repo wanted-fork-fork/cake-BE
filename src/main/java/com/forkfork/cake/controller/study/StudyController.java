@@ -104,18 +104,8 @@ public class StudyController {
             images.add(studyImg);
         }
 
-        List<String> give = new LinkedList<>();
-        List<String> take = new LinkedList<>();
-
         List<StudyCategory> studyCategoryList = studyCategoryService.findStudyCategoryByStudy(studyById);
-        for (StudyCategory studyCategory :
-                studyCategoryList) {
-            if (studyCategory.getType() == 1) {
-                give.add(studyCategory.getCategory().getName());
-            } else {
-                take.add(studyCategory.getCategory().getName());
-            }
-        }
+        SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryList);
 
         Boolean apply = true;
 
@@ -128,7 +118,7 @@ public class StudyController {
             }
         }
 
-        FindStudyDetailResponse findStudyDetailResponse = new FindStudyDetailResponse(studyById, userInformation, give, take, images, apply);
+        FindStudyDetailResponse findStudyDetailResponse = new FindStudyDetailResponse(studyById, userInformation, seperateCategoryDto.getGive(), seperateCategoryDto.getTake(), images, apply);
 
         return ResFormat.response(true, 200, findStudyDetailResponse);
     }
@@ -171,7 +161,9 @@ public class StudyController {
             SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
 
             String img = studyFileService.findThumbnailImg(study);
-
+            if (img == null) {
+                img = studyFileService.findThumbnailWithTakeSize(seperateCategoryDto.getTake().size());
+            }
             FindMyStudyResponse findMyStudy = new FindMyStudyResponse(study, seperateCategoryDto.getGive(), seperateCategoryDto.getTake(), img);
             findMyStudy.updateMyType(studyMember);
             findMyStudyResponses.add(findMyStudy);
@@ -204,6 +196,9 @@ public class StudyController {
             SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
 
             String img = studyFileService.findThumbnailImg(study);
+            if (img == null) {
+                img = studyFileService.findThumbnailWithTakeSize(seperateCategoryDto.getTake().size());
+            }
 
             User ownerUser = study.getUser();
             String profileUrl = null;
