@@ -36,22 +36,18 @@ public class Study {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
-    // kakaoMap location id
-    private String location;
+    private String storeName;
+
+    private String storeAddress;
 
     private Long peopleCnt;
-
-    private boolean earlyClosing;
-
-    public boolean getEarlyClosing() {
-        return this.earlyClosing;
-    }
 
     private String chatRoom;
 
     private String roomPwd;
 
-    private Boolean cancellation;
+//  1. 모집, 2. 시작, 3. 종료, 4. 취소
+    private int state;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
