@@ -168,14 +168,9 @@ public class StudyController {
 
             Study study = studyMember.getStudy();
             List<StudyCategory> studyCategoryByStudy = studyCategoryService.findStudyCategoryByStudy(study);
-
             SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
 
-            String img = null;
-            List<StudyFile> studyFileByStudy = studyFileService.findStudyFileByStudy(study);
-            if (!studyFileByStudy.isEmpty()) {
-                img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
-            }
+            String img = studyFileService.findThumbnailImg(study);
 
             FindMyStudyResponse findMyStudy = new FindMyStudyResponse(study, seperateCategoryDto.getGive(), seperateCategoryDto.getTake(), img);
             findMyStudy.updateMyType(studyMember);
@@ -208,11 +203,7 @@ public class StudyController {
 
             SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
 
-            String img = null;
-            List<StudyFile> studyFileByStudy = studyFileService.findStudyFileByStudy(study);
-            if (!studyFileByStudy.isEmpty()) {
-                img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
-            }
+            String img = studyFileService.findThumbnailImg(study);
 
             User ownerUser = study.getUser();
             String profileUrl = null;

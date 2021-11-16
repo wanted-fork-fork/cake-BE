@@ -4,6 +4,7 @@ import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.domain.StudyCategory;
 import com.forkfork.cake.domain.StudyFile;
 import com.forkfork.cake.domain.User;
+import com.forkfork.cake.dto.category.SeperateCategoryDto;
 import com.forkfork.cake.dto.paging.response.PagingResponse;
 import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.JwtTokenUtil;
@@ -46,7 +47,13 @@ public class PagingController {
                 continue;
             }
 
-            PagingResponse pagingResponse = studyService.makePagingResponseByStudy(study);
+            List<StudyCategory> studyCategoryByStudy = studyCategoryService.findStudyCategoryByStudy(study);
+            SeperateCategoryDto seperateCategoryDto = studyCategoryService.seperateCategory(studyCategoryByStudy);
+
+            String img = studyFileService.findThumbnailImg(study);
+
+            PagingResponse pagingResponse = new PagingResponse(study, img, seperateCategoryDto.getGive(), seperateCategoryDto.getTake());
+
             pagingResponseList.add(pagingResponse);
         }
 

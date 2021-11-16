@@ -12,8 +12,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudyFileService {
     private final StudyFileRepository studyFileRepository;
+    private final S3Service s3Service;
 
     public List<StudyFile> findStudyFileByStudy(Study study) {
         return studyFileRepository.findByStudy(study);
+    }
+
+    public String findThumbnailImg(Study study) {
+        String img = null;
+        List<StudyFile> studyFileByStudy = studyFileRepository.findByStudy(study);
+        if (!studyFileByStudy.isEmpty()) {
+            img = s3Service.getFileUrl(studyFileByStudy.get(0).getFile());
+        }
+
+//        img null 이면 기본이미지 추가
+
+        return img;
     }
 }
