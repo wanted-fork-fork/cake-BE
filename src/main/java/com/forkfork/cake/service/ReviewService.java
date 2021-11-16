@@ -16,4 +16,22 @@ public class ReviewService {
     public List<Review> findAllReviewByToUser(User user) {
         return reviewRepository.findAllByToUser(user);
     }
+
+    public Double findUserRate(User user) {
+        Double rate = null;
+        List<Review> allByToUser = reviewRepository.findAllByToUser(user);
+        Long cnt = 0L;
+        Double point = 0D;
+        for (Review review :
+                allByToUser) {
+            cnt += 1;
+            point += review.getReviewPoint();
+        }
+
+        if (cnt >= 5) {
+            rate = point / cnt;
+        }
+
+        return rate;
+    }
 }

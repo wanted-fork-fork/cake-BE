@@ -90,20 +90,7 @@ public class StudyController {
             profileUrl = s3Service.getFileUrl(user.getImg());
         }
 
-        Double rate = null;
-        List<Review> allReviewByToUser = reviewService.findAllReviewByToUser(user);
-
-        Long cnt = 0L;
-        Double point = 0D;
-        for (Review review :
-                allReviewByToUser) {
-            cnt += 1;
-            point += review.getReviewPoint();
-        }
-
-        if (cnt >= 5) {
-            rate = point / cnt;
-        }
+        Double rate = reviewService.findUserRate(user);
 
         UserInformationDto userInformation = new UserInformationDto(user, profileUrl, rate);
 
@@ -257,20 +244,8 @@ public class StudyController {
             if (ownerUser.getImg() != null) {
                 profileUrl = s3Service.getFileUrl(ownerUser.getImg());
             }
-            Double rate = null;
-            List<Review> allReviewByToUser = reviewService.findAllReviewByToUser(ownerUser);
 
-            Long cnt = 0L;
-            Double point = 0D;
-            for (Review review :
-                    allReviewByToUser) {
-                cnt += 1;
-                point += review.getReviewPoint();
-            }
-
-            if (cnt >= 5) {
-                rate = point / cnt;
-            }
+            Double rate = reviewService.findUserRate(ownerUser);
 
             UserInformationDto userInformationDto = new UserInformationDto(ownerUser, profileUrl, rate);
 
