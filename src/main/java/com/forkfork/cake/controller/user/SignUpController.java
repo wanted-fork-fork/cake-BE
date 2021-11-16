@@ -27,6 +27,7 @@ public class SignUpController {
     private final PasswordEncoder passwordEncoder;
     private final UserCategoryService userCategoryService;
     private final CategoryService categoryService;
+    private final ConsentFormService consentFormService;
 
 
     @GetMapping("/univ")
@@ -112,7 +113,10 @@ public class SignUpController {
             user.addUserCategory(userCategory);
         }
 
-        userService.saveUser(user);
+        User saveUser = userService.saveUser(user);
+
+        ConsentForm consentForm = ConsentForm.builder().serviceRule(true).personalInfo(true).user(saveUser).build();
+        consentFormService.saveConsentForm(consentForm);
 
         return ResFormat.response(true, 201, "유저 생성을 완료했습니다.");
 
