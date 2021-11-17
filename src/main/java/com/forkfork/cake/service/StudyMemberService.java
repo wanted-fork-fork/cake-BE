@@ -25,11 +25,11 @@ public class StudyMemberService {
         return studyMemberRepository.findAllByStudy(studyById);
     }
 
-    public List<StudyMember> findAllByUser(User user) {
-        return studyMemberRepository.findAllByUser(user);
-    }
-
     public List<StudyMember> findStudyMemberByUserAndState(User userByEmail, int state) {
         return studyMemberRepository.findAllByUserAndState(userByEmail, state);
+    }
+
+    public List<StudyMember> findStudyMemberByUser(User userByEmail) {
+        return studyMemberRepository.findAllByUser(userByEmail);
     }
 }
