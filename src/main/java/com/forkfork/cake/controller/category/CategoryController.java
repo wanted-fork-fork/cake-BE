@@ -7,10 +7,7 @@ import com.forkfork.cake.service.S3Service;
 import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,12 +39,15 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> findCategoryAll() {
+    public ResponseEntity<Object> findCategoryAll(@RequestParam boolean point) {
         List<Category> categoryAll = categoryService.findCategoryAll();
         List<FindAllCategoryReponse> categoryReponseList = new LinkedList<>();
 
         for (Category category:
              categoryAll) {
+            if (!point && category.getName().equals("포인트")) {
+                continue;
+            }
             categoryReponseList.add(new FindAllCategoryReponse(category.getId(), category.getName(), category.getImg()));
         }
 
