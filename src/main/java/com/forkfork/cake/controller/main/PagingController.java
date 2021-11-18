@@ -1,10 +1,8 @@
 package com.forkfork.cake.controller.main;
 
-import com.forkfork.cake.domain.Study;
-import com.forkfork.cake.domain.StudyCategory;
-import com.forkfork.cake.domain.StudyFile;
-import com.forkfork.cake.domain.User;
+import com.forkfork.cake.domain.*;
 import com.forkfork.cake.dto.category.SeperateCategoryDto;
+import com.forkfork.cake.dto.paging.response.FilteringResponse;
 import com.forkfork.cake.dto.paging.response.PagingResponse;
 import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.JwtTokenUtil;
@@ -95,9 +93,15 @@ public class PagingController {
             pagingResponseList.add(pagingResponse);
         }
 
+        Category giveCategory = categoryService.findCategoryById(give);
+        Category takeCategory = categoryService.findCategoryById(take);
+
+        FilteringResponse filteringResponse = new FilteringResponse(giveCategory.getName(), takeCategory.getName(), type);
+
         Map<String, Object> res = new LinkedHashMap<>();
         res.put("study", pagingResponseList);
         res.put("totalPage", studyCategoryByCategory.getTotalPages());
+        res.put("filter", filteringResponse);
 
         return ResFormat.response(true, 200, res);
     }

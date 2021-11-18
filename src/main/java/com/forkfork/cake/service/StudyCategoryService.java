@@ -41,7 +41,7 @@ public class StudyCategoryService {
             String categoryName = category.getName();
 
             if (categoryName.equals("포인트")) {
-                categoryName = String.valueOf(studyCategory.getStudy().getPoint());
+                categoryName = studyCategory.getStudy().getPoint() +" 포인트";
             }
 
             if (studyCategory.getType() == 1) {
