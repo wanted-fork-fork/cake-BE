@@ -38,11 +38,16 @@ public class StudyCategoryService {
         for (StudyCategory studyCategory:
                 existStudyCategory) {
             Category category = studyCategory.getCategory();
+            String categoryName = category.getName();
+
+            if (categoryName.equals("포인트")) {
+                categoryName = studyCategory.getStudy().getPoint() +" 포인트";
+            }
 
             if (studyCategory.getType() == 1) {
-                give.add(category.getName());
+                give.add(categoryName);
             } else {
-                take.add(category.getName());
+                take.add(categoryName);
             }
         }
 

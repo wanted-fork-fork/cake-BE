@@ -40,6 +40,8 @@ public class Study {
 
     private String storeAddress;
 
+    private Long point;
+
     private Long peopleCnt;
 
     private String chatRoom;
