@@ -35,6 +35,8 @@ public class SaveStudyRequest {
 
     private List<Long> take;
 
+    private Long point;
+
     public Study toStudyEntity(User user, String pwd) {
         return Study.builder()
                 .user(user)
@@ -49,6 +51,7 @@ public class SaveStudyRequest {
                 .chatRoom(this.chatRoom)
                 .roomPwd(pwd)
                 .state(1)
+                .point(this.point)
                 .build();
     }
 
