@@ -1,14 +1,13 @@
 package com.forkfork.cake.controller.studyMember;
 
+import com.forkfork.cake.domain.ApplyFile;
 import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.domain.StudyMember;
 import com.forkfork.cake.domain.User;
 import com.forkfork.cake.dto.studyMember.request.ApprovalStudyMemberRequest;
 import com.forkfork.cake.dto.studyMember.response.FindAllStudyMemberResponse;
-import com.forkfork.cake.service.ReviewService;
-import com.forkfork.cake.service.S3Service;
-import com.forkfork.cake.service.StudyMemberService;
-import com.forkfork.cake.service.StudyService;
+import com.forkfork.cake.dto.studyMember.response.FindStudyMemberDetailResponse;
+import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +25,11 @@ public class StudyMemberController {
     private final StudyService studyService;
     private final S3Service s3Service;
     private final ReviewService reviewService;
+    private final ApplyFileService applyFileService;
 
     @GetMapping("/all")
-    public ResponseEntity<Object> findAllStudyMembers(@RequestParam Long id) {
-        Study studyById = studyService.findStudyById(id);
+    public ResponseEntity<Object> findAllStudyMembers(@RequestParam Long studyId) {
+        Study studyById = studyService.findStudyById(studyId);
         List<StudyMember> studyMemberByStudy = studyMemberService.findStudyMemberByStudy(studyById);
 
         List<FindAllStudyMemberResponse> memberResponses = new LinkedList<>();
@@ -49,6 +49,23 @@ public class StudyMemberController {
         }
 
         return ResFormat.response(true, 200, memberResponses);
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<Object> findStudyMemberDetail(@RequestParam Long studyMemberId) {
+        StudyMember studyMemberById = studyMemberService.findStudyMemberById(studyMemberId);
+        List<ApplyFile> allApplyFileByStudyMember = applyFileService.findAllApplyFileByStudyMember(studyMemberById);
+
+        List<String> applyFiles = new LinkedList<>();
+        for (ApplyFile applyFile:
+                allApplyFileByStudyMember) {
+            String fileUrl = s3Service.getFileUrl(applyFile.getFile());
+            applyFiles.add(fileUrl);
+        }
+
+        FindStudyMemberDetailResponse findStudyMemberDetailResponse = new FindStudyMemberDetailResponse(studyMemberById, applyFiles);
+
+        return ResFormat.response(true, 200, findStudyMemberDetailResponse);
     }
 
     @PostMapping("/approval")

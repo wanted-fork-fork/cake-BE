@@ -14,7 +14,6 @@ public class FindAllStudyMemberResponse {
     String profileImg;
     Double rate;
     int state;
-    String msg;
 
     public FindAllStudyMemberResponse(StudyMember studyMember, User user, String profileImg, Double rate) {
         this.userId = user.getId();
@@ -23,6 +22,5 @@ public class FindAllStudyMemberResponse {
         this.profileImg = profileImg;
         this.rate = rate;
         this.state = studyMember.getState();
-        this.msg = studyMember.getMsg();
     }
 }
