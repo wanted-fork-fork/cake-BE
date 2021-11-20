@@ -9,8 +9,10 @@ import com.forkfork.cake.util.JwtTokenUtil;
 import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,11 +41,18 @@ public class UserController {
     }
 
     @GetMapping("/mypage")
-    public ResponseEntity<Object> findMyPage(HttpServletRequest request) {
+    public ResponseEntity<Object> findMyPage(HttpServletRequest request, @RequestParam @Nullable Long id) {
         String email = jwtTokenUtil.getSubject(request);
-        User userByEmail = userService.findUserByEmail(email);
+        User user;
+        if (id == null) {
+            user = userService.findUserByEmail(email);
+        } else {
+            user = userService.findUserById(id);
+        }
 
-        List<UserCategory> userCategoryByUser = userCategoryService.findUserCategoryByUser(userByEmail);
+        System.out.println("id = " + id);
+
+        List<UserCategory> userCategoryByUser = userCategoryService.findUserCategoryByUser(user);
 
         List<CategoryDto> give = new LinkedList<>();
         List<CategoryDto> take = new LinkedList<>();
@@ -58,11 +67,11 @@ public class UserController {
             }
         }
 
-        Double userRate = reviewService.findUserRate(userByEmail);
+        Double userRate = reviewService.findUserRate(user);
 
-        String profileImg = s3Service.getFileUrl(userByEmail.getImg());
+        String profileImg = s3Service.getFileUrl(user.getImg());
 
-        List<StudyMember> studyMemberByUser = studyMemberService.findStudyMemberByUser(userByEmail);
+        List<StudyMember> studyMemberByUser = studyMemberService.findStudyMemberByUser(user);
         Long studyCnt = 0L;
 
         for (StudyMember studyMember:
@@ -72,7 +81,7 @@ public class UserController {
             }
         }
 
-        FindMyPageResponse findMyPageResponse = new FindMyPageResponse(userByEmail, userRate, profileImg, give, take, studyCnt);
+        FindMyPageResponse findMyPageResponse = new FindMyPageResponse(user, userRate, profileImg, give, take, studyCnt);
 
         return ResFormat.response(true, 200, findMyPageResponse);
     }
@@ -84,4 +93,5 @@ public class UserController {
 
         return ResFormat.response(true, 200, userByEmail.getPoint());
     }
+
 }
