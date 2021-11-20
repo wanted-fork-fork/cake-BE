@@ -32,4 +32,8 @@ public class StudyMemberService {
     public List<StudyMember> findStudyMemberByUser(User userByEmail) {
         return studyMemberRepository.findAllByUser(userByEmail);
     }
+
+    public StudyMember findStudyMemberById(Long studyMemberId) {
+        return studyMemberRepository.findById(studyMemberId).orElse(null);
+    }
 }

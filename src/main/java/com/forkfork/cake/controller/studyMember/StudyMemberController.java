@@ -3,6 +3,7 @@ package com.forkfork.cake.controller.studyMember;
 import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.domain.StudyMember;
 import com.forkfork.cake.domain.User;
+import com.forkfork.cake.dto.studyMember.request.ApprovalStudyMemberRequest;
 import com.forkfork.cake.dto.studyMember.response.FindAllStudyMemberResponse;
 import com.forkfork.cake.service.ReviewService;
 import com.forkfork.cake.service.S3Service;
@@ -11,10 +12,7 @@ import com.forkfork.cake.service.StudyService;
 import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedList;
@@ -51,5 +49,16 @@ public class StudyMemberController {
         }
 
         return ResFormat.response(true, 200, memberResponses);
+    }
+
+    @PostMapping("/approval")
+    public ResponseEntity<Object> approvalStudyMember(@RequestBody ApprovalStudyMemberRequest approvalStudyMemberRequest) {
+        StudyMember studyMemberById = studyMemberService.findStudyMemberById(approvalStudyMemberRequest.getStudyMemberId());
+        studyMemberById.updateState(approvalStudyMemberRequest.getState());
+
+        studyMemberService.saveStudyMember(studyMemberById);
+
+        return ResFormat.response(true, 201, "신청자의 상태를 변경했습니다.");
+
     }
 }

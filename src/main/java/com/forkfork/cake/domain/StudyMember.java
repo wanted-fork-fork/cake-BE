@@ -56,4 +56,8 @@ public class StudyMember {
         applyFileList.add(applyFile);
         applyFile.setStudyMember(this);
     }
+
+    public void updateState(int state) {
+        this.state = state;
+    }
 }

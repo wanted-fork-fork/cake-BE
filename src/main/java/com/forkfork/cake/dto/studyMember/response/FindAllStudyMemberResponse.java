@@ -8,7 +8,8 @@ import lombok.Data;
 public class FindAllStudyMemberResponse {
     // 이름, 평점, 참석 여부, 신청서, id, 프로필
 
-    Long id;
+    Long userId;
+    Long studyMemberId;
     String nickname;
     String profileImg;
     Double rate;
@@ -16,7 +17,8 @@ public class FindAllStudyMemberResponse {
     String msg;
 
     public FindAllStudyMemberResponse(StudyMember studyMember, User user, String profileImg, Double rate) {
-        this.id = user.getId();
+        this.userId = user.getId();
+        this.studyMemberId = studyMember.getId();
         this.nickname = user.getNickname();
         this.profileImg = profileImg;
         this.rate = rate;
