@@ -13,6 +13,7 @@ public class FindStudyMemberDetailResponse {
     Long userId;
     String nickname;
     String profileImg;
+    int state;
     Double rate;
 
     public FindStudyMemberDetailResponse(StudyMember studyMemberById, List<String> applyFiles, Double rate, String profileImg) {
@@ -23,6 +24,6 @@ public class FindStudyMemberDetailResponse {
         this.nickname = studyMemberById.getUser().getNickname();
         this.rate = rate;
         this.profileImg = profileImg;
-
+        this.state = studyMemberById.getState();
     }
 }
