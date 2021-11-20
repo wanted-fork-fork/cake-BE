@@ -4,6 +4,7 @@ import com.forkfork.cake.domain.ApplyFile;
 import com.forkfork.cake.domain.Study;
 import com.forkfork.cake.domain.StudyMember;
 import com.forkfork.cake.domain.User;
+import com.forkfork.cake.dto.study.response.UserInformationDto;
 import com.forkfork.cake.dto.studyMember.request.ApprovalStudyMemberRequest;
 import com.forkfork.cake.dto.studyMember.response.FindAllStudyMemberResponse;
 import com.forkfork.cake.dto.studyMember.response.FindStudyMemberDetailResponse;
@@ -63,7 +64,12 @@ public class StudyMemberController {
             applyFiles.add(fileUrl);
         }
 
-        FindStudyMemberDetailResponse findStudyMemberDetailResponse = new FindStudyMemberDetailResponse(studyMemberById, applyFiles);
+        User user = studyMemberById.getUser();
+        String fileUrl = s3Service.getFileUrl(user.getImg());
+
+        Double userRate = reviewService.findUserRate(user);
+
+        FindStudyMemberDetailResponse findStudyMemberDetailResponse = new FindStudyMemberDetailResponse(studyMemberById, applyFiles, userRate, fileUrl);
 
         return ResFormat.response(true, 200, findStudyMemberDetailResponse);
     }

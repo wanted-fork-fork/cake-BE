@@ -10,10 +10,19 @@ public class FindStudyMemberDetailResponse {
     Long studyMemberId;
     String msg;
     List<String> applyFiles;
+    Long userId;
+    String nickname;
+    String profileImg;
+    Double rate;
 
-    public FindStudyMemberDetailResponse(StudyMember studyMemberById, List<String> applyFiles) {
+    public FindStudyMemberDetailResponse(StudyMember studyMemberById, List<String> applyFiles, Double rate, String profileImg) {
         this.studyMemberId = studyMemberById.getId();
         this.msg = studyMemberById.getMsg();
         this.applyFiles = applyFiles;
+        this.userId = studyMemberById.getUser().getId();
+        this.nickname = studyMemberById.getUser().getNickname();
+        this.rate = rate;
+        this.profileImg = profileImg;
+
     }
 }
