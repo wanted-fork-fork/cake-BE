@@ -107,4 +107,6 @@ public class StudyMemberController {
 
         return ResFormat.response(true, 201, "유저의 스터디 참여 신청이 취소됐습니다.");
     }
+
+
 }

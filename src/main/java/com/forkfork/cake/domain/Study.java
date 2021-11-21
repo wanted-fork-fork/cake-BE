@@ -98,4 +98,8 @@ public class Study {
         studyMember.setStudy(this);
 
     }
+
+    public void updateState(int state) {
+        this.state = state;
+    }
 }
