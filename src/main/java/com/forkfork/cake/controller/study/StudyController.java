@@ -4,10 +4,7 @@ import com.forkfork.cake.domain.*;
 import com.forkfork.cake.dto.category.SeperateCategoryDto;
 import com.forkfork.cake.dto.study.request.ApplyStudyRequest;
 import com.forkfork.cake.dto.study.request.SaveStudyRequest;
-import com.forkfork.cake.dto.study.response.FindMyStudyResponse;
-import com.forkfork.cake.dto.study.response.FindOtherStudyResponse;
-import com.forkfork.cake.dto.study.response.FindStudyDetailResponse;
-import com.forkfork.cake.dto.study.response.UserInformationDto;
+import com.forkfork.cake.dto.study.response.*;
 import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.AES128Encoder;
 import com.forkfork.cake.util.JwtTokenUtil;
@@ -218,4 +215,21 @@ public class StudyController {
 
         return ResFormat.response(true, 200, findMyStudyResponses);
     }
+
+    @GetMapping("/chat")
+    public ResponseEntity<Object> findStudyChatInfo(HttpServletRequest request, @RequestParam Long studyId) throws Exception {
+        Study studyById = studyService.findStudyById(studyId);
+
+        String chatRoom = studyById.getChatRoom();
+        String roomPwd = studyById.getRoomPwd();
+
+        AES128Encoder aes128Encoder = new AES128Encoder(AES128KEY);
+        String decrypt = aes128Encoder.decrypt(roomPwd);
+
+        FindStudyChatInfoResponse findStudyChatInfoResponse = new FindStudyChatInfoResponse(chatRoom, decrypt);
+
+        return ResFormat.response(true, 200, findStudyChatInfoResponse);
+
+    }
+
 }
