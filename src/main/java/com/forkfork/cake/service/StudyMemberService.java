@@ -36,4 +36,12 @@ public class StudyMemberService {
     public StudyMember findStudyMemberById(Long studyMemberId) {
         return studyMemberRepository.findById(studyMemberId).orElse(null);
     }
+
+    public StudyMember findStudyMemberByUserAndStudy(User userByEmail, Study studyById) {
+        return studyMemberRepository.findByUserAndStudy(userByEmail, studyById);
+    }
+
+    public void deleteByStudyMember(StudyMember studyMemberByUserAndStudy) {
+        studyMemberRepository.delete(studyMemberByUserAndStudy);
+    }
 }

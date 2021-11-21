@@ -9,6 +9,7 @@ import com.forkfork.cake.dto.studyMember.request.ApprovalStudyMemberRequest;
 import com.forkfork.cake.dto.studyMember.response.FindAllStudyMemberResponse;
 import com.forkfork.cake.dto.studyMember.response.FindStudyMemberDetailResponse;
 import com.forkfork.cake.service.*;
+import com.forkfork.cake.util.JwtTokenUtil;
 import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +23,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/studymember")
 public class StudyMemberController {
+
     private final StudyMemberService studyMemberService;
     private final StudyService studyService;
     private final S3Service s3Service;
     private final ReviewService reviewService;
     private final ApplyFileService applyFileService;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserService userService;
 
     @GetMapping("/all")
     public ResponseEntity<Object> findAllStudyMembers(@RequestParam Long studyId) {
@@ -84,4 +88,25 @@ public class StudyMemberController {
         return ResFormat.response(true, 201, "신청자의 상태를 변경했습니다.");
 
     }
+
+    @DeleteMapping("/cancel")
+    public ResponseEntity<Object> cancleApplication(HttpServletRequest request, @RequestParam Long studyId) {
+        String email = jwtTokenUtil.getSubject(request);
+        User userByEmail = userService.findUserByEmail(email);
+        Study studyById = studyService.findStudyById(studyId);
+
+        StudyMember studyMemberByUserAndStudy = studyMemberService.findStudyMemberByUserAndStudy(userByEmail, studyById);
+        List<ApplyFile> allApplyFileByStudyMember = applyFileService.findAllApplyFileByStudyMember(studyMemberByUserAndStudy);
+
+        for (ApplyFile applyFile:
+             allApplyFileByStudyMember) {
+            s3Service.deleteFile(applyFile.getFile());
+        }
+
+        studyMemberService.deleteByStudyMember(studyMemberByUserAndStudy);
+
+        return ResFormat.response(true, 201, "유저의 스터디 참여 신청이 취소됐습니다.");
+    }
+
+
 }

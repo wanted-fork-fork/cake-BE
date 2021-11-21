@@ -139,4 +139,11 @@ public class User {
     @OneToOne(mappedBy = "user")
     private ConsentForm consentForm;
 
+    public void reducePoint(Long point) {
+        this.point -= point;
+    }
+
+    public void appendPoint(Long point) {
+        this.point += point;
+    }
 }

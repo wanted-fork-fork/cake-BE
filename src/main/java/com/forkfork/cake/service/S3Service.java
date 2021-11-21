@@ -90,4 +90,8 @@ public class S3Service {
     public String getFileUrl(String fileName) {
         return s3Client.getUrl(bucket, fileName).toString();
     }
+
+    public void deleteFile(String file) {
+        s3Client.deleteObject(bucket, file);
+    }
 }

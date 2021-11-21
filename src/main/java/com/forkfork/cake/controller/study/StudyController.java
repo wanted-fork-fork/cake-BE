@@ -4,10 +4,7 @@ import com.forkfork.cake.domain.*;
 import com.forkfork.cake.dto.category.SeperateCategoryDto;
 import com.forkfork.cake.dto.study.request.ApplyStudyRequest;
 import com.forkfork.cake.dto.study.request.SaveStudyRequest;
-import com.forkfork.cake.dto.study.response.FindMyStudyResponse;
-import com.forkfork.cake.dto.study.response.FindOtherStudyResponse;
-import com.forkfork.cake.dto.study.response.FindStudyDetailResponse;
-import com.forkfork.cake.dto.study.response.UserInformationDto;
+import com.forkfork.cake.dto.study.response.*;
 import com.forkfork.cake.service.*;
 import com.forkfork.cake.util.AES128Encoder;
 import com.forkfork.cake.util.JwtTokenUtil;
@@ -15,11 +12,14 @@ import com.forkfork.cake.util.ResFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/study")
@@ -34,6 +34,7 @@ public class StudyController {
     private final ReviewService reviewService;
     private final StudyFileService studyFileService;
     private final StudyCategoryService studyCategoryService;
+    private final PointDealService pointDealService;
 
     @Value("${KEY.AES128}")
     private String AES128KEY;
@@ -217,5 +218,125 @@ public class StudyController {
         }
 
         return ResFormat.response(true, 200, findMyStudyResponses);
+    }
+
+    @GetMapping("/chat")
+    public ResponseEntity<Object> findStudyChatInfo(HttpServletRequest request, @RequestParam Long studyId) throws Exception {
+        Study studyById = studyService.findStudyById(studyId);
+
+        String chatRoom = studyById.getChatRoom();
+        String roomPwd = studyById.getRoomPwd();
+
+        AES128Encoder aes128Encoder = new AES128Encoder(AES128KEY);
+        String decrypt = aes128Encoder.decrypt(roomPwd);
+
+        FindStudyChatInfoResponse findStudyChatInfoResponse = new FindStudyChatInfoResponse(chatRoom, decrypt);
+
+        return ResFormat.response(true, 200, findStudyChatInfoResponse);
+
+    }
+
+
+    @PostMapping("/start")
+    @Transactional
+    public ResponseEntity<Object> startStudy(HttpServletRequest request, @RequestParam Long studyId) {
+        String email = jwtTokenUtil.getSubject(request);
+        User userByEmail = userService.findUserByEmail(email);
+
+        Study studyById = studyService.findStudyById(studyId);
+        List<StudyCategory> studyCategoryByStudy = studyCategoryService.findStudyCategoryByStudy(studyById);
+
+        boolean isGivePoint = false;
+        boolean isTakePoint = false;
+        for (StudyCategory studyCategory:
+             studyCategoryByStudy) {
+            if (studyCategory.getCategory().getName().equals("포인트")) {
+                if (studyCategory.getType() == 1) {
+                    isGivePoint = true;
+                } else {
+                    isTakePoint = true;
+                }
+            }
+        }
+
+        if (!studyById.getUser().getEmail().equals(email)) {
+            return ResFormat.response(false, 400, "해당 유저가 만든 스터디가 아닙니다.");
+        }
+//            신청자 명단 받기
+        List<StudyMember> studyMemberByStudy = studyMemberService.findStudyMemberByStudy(studyById);
+        Long studyPoint = studyById.getPoint();
+
+        if ( isTakePoint ) {
+//          신청자 금액 확인
+            List<UserInformationDto> userInformationDtos = new LinkedList<>();
+            for (StudyMember studyMember:
+                 studyMemberByStudy) {
+                if (studyMember.getState() == 3 && studyMember.getUser().getPoint() < studyPoint) {
+                    String fileUrl = s3Service.getFileUrl(studyMember.getUser().getImg());
+                    Double userRate = reviewService.findUserRate(studyMember.getUser());
+                    userInformationDtos.add(new UserInformationDto(studyMember.getUser(), fileUrl, userRate));
+                }
+            }
+            if (!userInformationDtos.isEmpty()) {
+                Map<String, Object> res = new LinkedHashMap<>();
+                res.put("msg", "참가자 중 포인트가 부족한 참가자가 있습니다.");
+                res.put("studyMembers", userInformationDtos);
+
+                return ResFormat.response(false, 400, res);
+            }
+//            신청자 포인트 차감
+            for (StudyMember studyMember:
+                 studyMemberByStudy) {
+                if (studyMember.getState() == 3) {
+                    User fromUser = studyMember.getUser();
+                    User toUser = studyById.getUser();
+                    pointDealService.makePointDeal(toUser, fromUser,studyPoint);
+                }
+            }
+        }
+
+        if (isGivePoint) {
+//          신청자 금액 확인
+            List<UserInformationDto> userInformationDtos = new LinkedList<>();
+            List<User> toUserList = new LinkedList<>();
+            for (StudyMember studyMember:
+                    studyMemberByStudy) {
+                if (studyMember.getState() == 3) {
+                    toUserList.add(studyMember.getUser());
+                }
+            }
+            if (studyById.getUser().getPoint() < studyPoint*toUserList.size()) {
+                String fileUrl = s3Service.getFileUrl(studyById.getUser().getImg());
+                Double userRate = reviewService.findUserRate(studyById.getUser());
+                userInformationDtos.add(new UserInformationDto(studyById.getUser(), fileUrl, userRate));
+
+                Map<String, Object> res = new LinkedHashMap<>();
+                res.put("msg", "참가자 중 포인트가 부족한 참가자가 있습니다.");
+                res.put("studyMembers", userInformationDtos);
+
+                return ResFormat.response(false, 400, res);
+            }
+//            신청자 포인트 차감
+            for (User toUser:
+                    toUserList) {
+                pointDealService.makePointDeal(toUser, studyById.getUser(),studyPoint);
+            }
+        }
+
+//        신청자들 상태 변경
+        for (StudyMember studyMember:
+             studyMemberByStudy) {
+            if (studyMember.getState() == 2) {
+                studyMember.updateState(4);
+                studyMemberService.saveStudyMember(studyMember);
+            }
+        }
+//        스터디 상태 변경
+//  1. 모집, 2. 시작, 3. 종료, 4. 취소
+        studyById.updateState(2);
+        studyService.saveStudy(studyById);
+
+        return ResFormat.response(true, 201, "스터디가 시작됐습니다.");
+
     }
 }
