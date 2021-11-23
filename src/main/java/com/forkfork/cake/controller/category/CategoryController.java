@@ -45,7 +45,7 @@ public class CategoryController {
 
         for (Category category:
              categoryAll) {
-            if (!point && category.getName().equals("포인트")) {
+            if (!point && category.getName().equals("현금")) {
                 continue;
             }
             categoryReponseList.add(new FindAllCategoryReponse(category.getId(), category.getName(), category.getImg()));

@@ -40,8 +40,8 @@ public class StudyCategoryService {
             Category category = studyCategory.getCategory();
             String categoryName = category.getName();
 
-            if (categoryName.equals("포인트")) {
-                categoryName = studyCategory.getStudy().getPoint() +" 포인트";
+            if (categoryName.equals("현금")) {
+                categoryName = studyCategory.getStudy().getPoint() +"원";
             }
 
             if (studyCategory.getType() == 1) {

@@ -250,7 +250,7 @@ public class StudyController {
         boolean isTakePoint = false;
         for (StudyCategory studyCategory:
              studyCategoryByStudy) {
-            if (studyCategory.getCategory().getName().equals("포인트")) {
+            if (studyCategory.getCategory().getName().equals("현금")) {
                 if (studyCategory.getType() == 1) {
                     isGivePoint = true;
                 } else {
