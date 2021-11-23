@@ -34,4 +34,18 @@ public class ReviewService {
 
         return rate;
     }
+
+    public Double findUserRateInMyPage(User user) {
+        List<Review> allByToUser = reviewRepository.findAllByToUser(user);
+        Long cnt = 0L;
+        Double point = 0D;
+        for (Review review :
+                allByToUser) {
+            cnt += 1;
+            point += review.getReviewPoint();
+        }
+
+        return point / cnt;
+
+    }
 }

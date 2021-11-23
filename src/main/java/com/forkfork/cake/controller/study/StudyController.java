@@ -241,8 +241,6 @@ public class StudyController {
     @Transactional
     public ResponseEntity<Object> startStudy(HttpServletRequest request, @RequestParam Long studyId) {
         String email = jwtTokenUtil.getSubject(request);
-        User userByEmail = userService.findUserByEmail(email);
-
         Study studyById = studyService.findStudyById(studyId);
 
         if (!studyById.getUser().getEmail().equals(email)) {
@@ -265,6 +263,48 @@ public class StudyController {
         studyService.saveStudy(studyById);
 
         return ResFormat.response(true, 201, "스터디가 시작됐습니다.");
+    }
 
+    @PostMapping("/end")
+    public ResponseEntity<Object> endStudy(HttpServletRequest request, @RequestParam Long studyId) {
+        String email = jwtTokenUtil.getSubject(request);
+        Study studyById = studyService.findStudyById(studyId);
+
+        if (!studyById.getUser().getEmail().equals(email)) {
+            return ResFormat.response(false, 400, "해당 유저가 만든 스터디가 아닙니다.");
+        }
+
+        if (studyById.getState() != 2) {
+            return ResFormat.response(false, 400, "스터디 진행 중이 아닙니다.");
+        }
+
+        studyById.updateState(3);
+        studyService.saveStudy(studyById);
+        return ResFormat.response(true, 201, "스터디가 종료됐습니다.");
+    }
+
+    @DeleteMapping("/cancel")
+    public ResponseEntity<Object> cancelStudy(HttpServletRequest request, @RequestParam Long studyId) {
+        String email = jwtTokenUtil.getSubject(request);
+        Study studyById = studyService.findStudyById(studyId);
+
+        if (!studyById.getUser().getEmail().equals(email)) {
+            return ResFormat.response(false, 400, "해당 유저가 만든 스터디가 아닙니다.");
+        }
+
+        List<StudyMember> studyMemberByStudy = studyMemberService.findStudyMemberByStudy(studyById);
+
+        for (StudyMember studyMember:
+                studyMemberByStudy) {
+            if (studyMember.getState() == 1) {
+                continue;
+            }
+            studyMember.updateState(4);
+            studyMemberService.saveStudyMember(studyMember);
+        }
+        
+        studyById.updateState(4);
+        studyService.saveStudy(studyById);
+        return ResFormat.response(true, 201, "스터디가 취소됐습니다.");
     }
 }

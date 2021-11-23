@@ -66,8 +66,13 @@ public class UserController {
                 take.add(new CategoryDto(category.getId(), category.getName(), category.getImg()));
             }
         }
+        Double userRate;
 
-        Double userRate = reviewService.findUserRate(user);
+        if (id == null) {
+            userRate = reviewService.findUserRateInMyPage(user);
+        } else {
+            userRate = reviewService.findUserRate(user);
+        }
 
         String profileImg = s3Service.getFileUrl(user.getImg());
 
