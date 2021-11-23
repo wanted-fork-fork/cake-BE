@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://wanted-cake.netlify.app", "http://localhost:3000", "http://localhost.org:3000")
+                .allowedOrigins("https://cake-fork.netlify.app", "http://localhost:3000", "http://localhost.org:3000")
                 .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowCredentials(true)
                 .maxAge(3600);
