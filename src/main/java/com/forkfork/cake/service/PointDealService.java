@@ -16,14 +16,14 @@ public class PointDealService {
     public PointDeal savePointDeal(PointDeal deal) {
         return pointDealRespository.save(deal);
     }
-
-    public void makePointDeal(User toUser, User fromUser, Long point) {
-        PointDeal deal = PointDeal.builder().point(point).fromUser(fromUser).toUser(toUser).build();
-        pointDealRespository.save(deal);
-        fromUser.reducePoint(point);
-        toUser.appendPoint(point);
-
-        userService.saveUser(toUser);
-        userService.saveUser(fromUser);
-    }
+//      Deprecated
+//    public void makePointDeal(User toUser, User fromUser, Long point) {
+//        PointDeal deal = PointDeal.builder().point(point).fromUser(fromUser).toUser(toUser).build();
+//        pointDealRespository.save(deal);
+//        fromUser.reducePoint(point);
+//        toUser.appendPoint(point);
+//
+//        userService.saveUser(toUser);
+//        userService.saveUser(fromUser);
+//    }
 }
