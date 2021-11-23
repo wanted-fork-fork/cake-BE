@@ -30,7 +30,6 @@ public class SignUpRequest {
                 .img(this.img)
                 .univCategory(this.univCategory)
                 .university(university)
-                .point(0L)
                 .portfolio(null)
                 .build();
 

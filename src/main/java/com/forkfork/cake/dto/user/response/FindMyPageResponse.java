@@ -21,7 +21,6 @@ public class FindMyPageResponse {
         this.profileImg = profileImg;
         this.nickname = userByEmail.getNickname();
         this.email = userByEmail.getEmail();
-        this.point = userByEmail.getPoint();
         this.rate = userRate;
         this.give = give;
         this.take = take;

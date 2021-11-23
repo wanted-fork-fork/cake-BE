@@ -86,12 +86,13 @@ public class UserController {
         return ResFormat.response(true, 200, findMyPageResponse);
     }
 
-    @GetMapping("/point")
-    public ResponseEntity<Object> findMyRemainPoint(HttpServletRequest request) {
-        String email = jwtTokenUtil.getSubject(request);
-        User userByEmail = userService.findUserByEmail(email);
-
-        return ResFormat.response(true, 200, userByEmail.getPoint());
-    }
+//    Deprecated
+//    @GetMapping("/point")
+//    public ResponseEntity<Object> findMyRemainPoint(HttpServletRequest request) {
+//        String email = jwtTokenUtil.getSubject(request);
+//        User userByEmail = userService.findUserByEmail(email);
+//
+//        return ResFormat.response(true, 200, userByEmail.getPoint());
+//    }
 
 }

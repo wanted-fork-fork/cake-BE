@@ -38,8 +38,6 @@ public class User {
     @Column(columnDefinition = "TEXT")
     private String portfolio;
 
-    private Long point;
-
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date createdAt;
@@ -139,11 +137,4 @@ public class User {
     @OneToOne(mappedBy = "user")
     private ConsentForm consentForm;
 
-    public void reducePoint(Long point) {
-        this.point -= point;
-    }
-
-    public void appendPoint(Long point) {
-        this.point += point;
-    }
 }
