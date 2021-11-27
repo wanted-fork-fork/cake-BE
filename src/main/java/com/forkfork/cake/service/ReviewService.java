@@ -39,10 +39,15 @@ public class ReviewService {
         List<Review> allByToUser = reviewRepository.findAllByToUser(user);
         Long cnt = 0L;
         Double point = 0D;
+
         for (Review review :
                 allByToUser) {
             cnt += 1;
             point += review.getReviewPoint();
+        }
+
+        if (cnt == 0) {
+            return 0D;
         }
 
         return point / cnt;
