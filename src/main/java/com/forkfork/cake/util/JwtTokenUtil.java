@@ -27,4 +27,9 @@ public class JwtTokenUtil {
             return authService.getSubject(claimsByToken);
         }
     }
+
+    public String getSubject(String accessToken) {
+        Claims claimsByToken = authService.getClaimsByToken(accessToken);
+        return authService.getSubject(claimsByToken);
+    }
 }
