@@ -147,4 +147,15 @@ public class User {
         chatRooms.add(chatRoom);
         chatRoom.setUser(this);
     }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChatMsg> chatMsgList = new LinkedList<>();
+
+    public void addChatMsg(ChatMsg chatMsg) {
+        if (chatMsgList == null) {
+            chatMsgList = new LinkedList<>();
+        }
+        chatMsgList.add(chatMsg);
+        chatMsg.setUser(this);
+    }
 }

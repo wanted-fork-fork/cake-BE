@@ -35,6 +35,7 @@ public class StudyController {
     private final StudyFileService studyFileService;
     private final StudyCategoryService studyCategoryService;
     private final PointDealService pointDealService;
+    private final ChatRoomService chatRoomService;
 
     @Value("${KEY.AES128}")
     private String AES128KEY;
@@ -44,11 +45,7 @@ public class StudyController {
         String email = jwtTokenUtil.getSubject(request);
         User userByEmail = userService.findUserByEmail(email);
 
-        AES128Encoder aes128Encoder = new AES128Encoder(AES128KEY);
-        String roomPwd = saveStudyRequest.getRoomPwd();
-        String encrypt = aes128Encoder.encrypt(roomPwd);
-
-        Study study = saveStudyRequest.toStudyEntity(userByEmail, encrypt);
+        Study study = saveStudyRequest.toStudyEntity(userByEmail);
 
         for (String img :
                 saveStudyRequest.getImages()) {
@@ -74,6 +71,8 @@ public class StudyController {
         StudyMember studyMember = StudyMember.builder().study(savedStudy).user(userByEmail).state(1).build();
 
         studyMemberService.saveStudyMember(studyMember);
+
+        chatRoomService.createChatRoom(userByEmail, savedStudy);
 
         return ResFormat.response(true, 201, "스터디 생성을 완료했습니다.");
 
@@ -220,21 +219,22 @@ public class StudyController {
         return ResFormat.response(true, 200, findMyStudyResponses);
     }
 
-    @GetMapping("/chat")
-    public ResponseEntity<Object> findStudyChatInfo(HttpServletRequest request, @RequestParam Long studyId) throws Exception {
-        Study studyById = studyService.findStudyById(studyId);
-
-        String chatRoom = studyById.getChatRoom();
-        String roomPwd = studyById.getRoomPwd();
-
-        AES128Encoder aes128Encoder = new AES128Encoder(AES128KEY);
-        String decrypt = aes128Encoder.decrypt(roomPwd);
-
-        FindStudyChatInfoResponse findStudyChatInfoResponse = new FindStudyChatInfoResponse(chatRoom, decrypt);
-
-        return ResFormat.response(true, 200, findStudyChatInfoResponse);
-
-    }
+    // Deprecated
+    // @GetMapping("/chat")
+    // public ResponseEntity<Object> findStudyChatInfo(HttpServletRequest request, @RequestParam Long studyId) throws Exception {
+    //     Study studyById = studyService.findStudyById(studyId);
+    //
+    //     String chatRoom = studyById.getChatRoom();
+    //     String roomPwd = studyById.getRoomPwd();
+    //
+    //     AES128Encoder aes128Encoder = new AES128Encoder(AES128KEY);
+    //     String decrypt = aes128Encoder.decrypt(roomPwd);
+    //
+    //     FindStudyChatInfoResponse findStudyChatInfoResponse = new FindStudyChatInfoResponse(chatRoom, decrypt);
+    //
+    //     return ResFormat.response(true, 200, findStudyChatInfoResponse);
+    //
+    // }
 
 
     @PostMapping("/start")

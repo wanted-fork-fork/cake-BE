@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,9 @@ public class ChatRoom {
 
 	@ManyToOne
 	User user;
+
+	@OneToOne
+	Study study;
 
 	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
 	private List<ChatMsg> chatMsgList = new LinkedList<>();

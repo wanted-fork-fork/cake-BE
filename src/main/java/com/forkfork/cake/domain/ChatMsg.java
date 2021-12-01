@@ -34,6 +34,9 @@ public class ChatMsg {
 	String msg;
 
 	@ManyToOne
+	User user;
+
+	@ManyToOne
 	ChatRoom chatRoom;
 
 }

@@ -44,11 +44,7 @@ public class Study {
 
     private Long peopleCnt;
 
-    private String chatRoom;
-
-    private String roomPwd;
-
-//  1. 모집, 2. 시작, 3. 종료, 4. 취소
+    //  1. 모집, 2. 시작, 3. 종료, 4. 취소
     private int state;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -102,4 +98,7 @@ public class Study {
     public void updateState(int state) {
         this.state = state;
     }
+
+    @OneToOne(mappedBy = "study")
+    private ChatRoom chatRoom;
 }

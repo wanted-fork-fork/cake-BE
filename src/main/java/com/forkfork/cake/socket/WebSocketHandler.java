@@ -30,7 +30,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
 		sessionList.add(session);
 
-		for(WebSocketSession s : sessionList) {
+		for (WebSocketSession s : sessionList) {
 			s.sendMessage(new TextMessage(session.getId() + "님이 입장하셨습니다."));
 		}
 	}
@@ -41,18 +41,17 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		String email = jwtTokenUtil.getSubject(testDto.getToken());
 		String[] split = Objects.requireNonNull(session.getUri()).getQuery().split("room=");
 		System.out.println(split[1]);
-		for(WebSocketSession s : sessionList) {
-			s.sendMessage(new TextMessage(email +":" + split[1] + ":" + testDto.getMsg()));
+		for (WebSocketSession s : sessionList) {
+			s.sendMessage(new TextMessage(email + ":" + split[1] + ":" + testDto.getMsg()));
 		}
 	}
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
-
 		sessionList.remove(session);
 
-		for(WebSocketSession s : sessionList) {
+		for (WebSocketSession s : sessionList) {
 			s.sendMessage(new TextMessage(session.getId() + "님이 퇴장하셨습니다."));
 		}
 	}

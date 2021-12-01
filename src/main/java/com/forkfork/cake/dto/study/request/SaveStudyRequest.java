@@ -25,10 +25,6 @@ public class SaveStudyRequest {
 
     private Long peopleCnt;
 
-    private String chatRoom;
-
-    private String roomPwd;
-
     private List<String> images;
 
     private List<Long> give;
@@ -37,7 +33,7 @@ public class SaveStudyRequest {
 
     private Long point;
 
-    public Study toStudyEntity(User user, String pwd) {
+    public Study toStudyEntity(User user) {
         return Study.builder()
                 .user(user)
                 .type(this.type)
@@ -48,8 +44,6 @@ public class SaveStudyRequest {
                 .storeAddress(this.storeAddress)
                 .storeName(this.storeName)
                 .peopleCnt(this.peopleCnt)
-                .chatRoom(this.chatRoom)
-                .roomPwd(pwd)
                 .state(1)
                 .point(this.point)
                 .build();
