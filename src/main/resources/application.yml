@@ -28,6 +28,9 @@ spring:
       max-file-size: 15MB
       max-request-size: 15MB
 
+  mustache:
+    suffix: .html
+
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
@@ -47,6 +50,12 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
+
+viewname:
+  room: chat/room
+  chat:
+    rooms: chat/rooms
 ---
 
 spring:

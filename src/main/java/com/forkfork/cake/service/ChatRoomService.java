@@ -15,11 +15,5 @@ public class ChatRoomService {
 
 	private final ChatRoomRepository chatRoomRepository;
 
-	public ChatRoom createChatRoom(User user, Study study) {
-		ChatRoom chatRoom = ChatRoom.builder().user(user).study(study).build();
-		chatRoomRepository.save(chatRoom);
-
-		return chatRoom;
-	}
 
 }

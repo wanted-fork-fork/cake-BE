@@ -99,6 +99,4 @@ public class Study {
         this.state = state;
     }
 
-    @OneToOne(mappedBy = "study")
-    private ChatRoom chatRoom;
 }

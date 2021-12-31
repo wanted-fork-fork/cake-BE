@@ -138,17 +138,6 @@ public class User {
     private ConsentForm consentForm;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ChatRoom> chatRooms = new LinkedList<>();
-
-    public void addChatRoom(ChatRoom chatRoom) {
-        if (chatRooms == null) {
-            chatRooms = new LinkedList<>();
-        }
-        chatRooms.add(chatRoom);
-        chatRoom.setUser(this);
-    }
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ChatMsg> chatMsgList = new LinkedList<>();
 
     public void addChatMsg(ChatMsg chatMsg) {
