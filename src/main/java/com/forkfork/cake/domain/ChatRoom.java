@@ -28,20 +28,5 @@ public class ChatRoom {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
-	User user;
-
-	@OneToOne
-	Study study;
-
-	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-	private List<ChatMsg> chatMsgList = new LinkedList<>();
-
-	public void addChatMsg(ChatMsg chatRoom) {
-		if (chatMsgList == null) {
-			chatMsgList = new LinkedList<>();
-		}
-		chatMsgList.add(chatRoom);
-		chatRoom.setChatRoom(this);
-	}
+	private String roomId;
 }
