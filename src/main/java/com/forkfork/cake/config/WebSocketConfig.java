@@ -1,6 +1,7 @@
 package com.forkfork.cake.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -15,7 +16,10 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSocketMessageBroker
+@RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+	private final StompHandler interceptors;
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -30,5 +34,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		registry.enableSimpleBroker("/sub");
 		// /pub 으로 시작하는 destination 헤더 -> @Controller 객체의 @MessageMapping 메서드로 라우팅, 클라이언트 send요청 처리
 		registry.setApplicationDestinationPrefixes("/pub");
+	}
+
+	@Override
+	public void configureClientInboundChannel(ChannelRegistration registration){
+		registration.interceptors(interceptors);
 	}
 }
