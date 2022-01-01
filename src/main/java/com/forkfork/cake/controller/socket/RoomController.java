@@ -1,14 +1,20 @@
 package com.forkfork.cake.controller.socket;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.forkfork.cake.domain.ChatRoom;
+import com.forkfork.cake.dto.socket.ChatRoomDTO;
 import com.forkfork.cake.repository.ChatRoomRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,35 +26,34 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class RoomController {
 
-	private final ChatRoomRepository repository;
+	private final ChatRoomRepository chatRoomRepository;
 
-	//채팅방 목록 조회
-	@GetMapping(value = "/rooms")
-	public ModelAndView rooms(){
-
-		log.info("# All Chat Rooms");
-		ModelAndView mv = new ModelAndView("chat/rooms");
-
-		mv.addObject("list", repository.findAllRooms());
-
-		return mv;
-	}
-
-	//채팅방 개설
-	@PostMapping(value = "/room")
-	public String create(@RequestParam String name, RedirectAttributes rttr){
-
-		log.info("# Create Chat Room , name: " + name);
-		rttr.addFlashAttribute("roomName", repository.createChatRoomDTO(name));
-		return "redirect:/chat/rooms";
-	}
-
-	//채팅방 조회
 	@GetMapping("/room")
-	public void getRoom(String roomId, Model model){
+	public String rooms(Model model) {
+		return "/chat/room";
+	}
 
-		log.info("# get Chat Room, roomID : " + roomId);
+	@GetMapping("/rooms")
+	@ResponseBody
+	public List<ChatRoomDTO> room() {
+		return chatRoomRepository.findAllRooms();
+	}
 
-		model.addAttribute("/room", repository.findRoomById(roomId));
+	@PostMapping("/room")
+	@ResponseBody
+	public ChatRoomDTO createRoom(@RequestParam String name) {
+		return chatRoomRepository.createChatRoomDTO(name);
+	}
+
+	@GetMapping("/room/enter/{roomId}")
+	public String roomDetail(Model model, @PathVariable String roomId) {
+		model.addAttribute("roomId", roomId);
+		return "/chat/roomdetail";
+	}
+
+	@GetMapping("/room/{roomId}")
+	@ResponseBody
+	public ChatRoomDTO roomInfo(@PathVariable String roomId) {
+		return chatRoomRepository.findRoomById(roomId);
 	}
 }
