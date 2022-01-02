@@ -13,7 +13,7 @@ public class ChatRoomDTO {
 
 	private String roomId;
 	private String name;
-	private Set<WebSocketSession> sessions = new HashSet<>();
+	// private Set<WebSocketSession> sessions = new HashSet<>();
 	//WebSocketSession은 Spring에서 Websocket Connection이 맺어진 세션
 
 	public static ChatRoomDTO create(String name){

@@ -72,7 +72,7 @@ public class StudyController {
 
         studyMemberService.saveStudyMember(studyMember);
 
-        // chatRoomService.createChatRoom(userByEmail, savedStudy);
+        chatRoomService.saveChatRoom(userByEmail, savedStudy);
 
         return ResFormat.response(true, 201, "스터디 생성을 완료했습니다.");
 

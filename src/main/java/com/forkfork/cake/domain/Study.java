@@ -95,6 +95,18 @@ public class Study {
 
     }
 
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
+    private List<ChatRoom> chatRoomList = new LinkedList<>();
+
+    public void addChatRoom(ChatRoom chatRoom) {
+        if (chatRoomList == null) {
+            chatRoomList = new LinkedList<>();
+        }
+        chatRoomList.add(chatRoom);
+        chatRoom.setStudy(this);
+
+    }
+
     public void updateState(int state) {
         this.state = state;
     }
