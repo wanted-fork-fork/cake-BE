@@ -29,4 +29,26 @@ public class ChatRoom {
 	private Long id;
 
 	private String roomId;
+
+	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+	private List<ChatRoomMember> chatRoomMembers = new LinkedList<>();
+
+	public void addChatRoomMember(ChatRoomMember chatRoomMember) {
+		if (chatRoomMembers == null) {
+			chatRoomMembers = new LinkedList<>();
+		}
+		chatRoomMembers.add(chatRoomMember);
+		chatRoomMember.setChatRoom(this);
+	}
+
+	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+	private List<ChatMsg> chatMsgs = new LinkedList<>();
+
+	public void addChatMsg(ChatMsg chatMsg) {
+		if (chatMsgs == null) {
+			chatMsgs = new LinkedList<>();
+		}
+		chatMsgs.add(chatMsg);
+		chatMsg.setChatRoom(this);
+	}
 }
