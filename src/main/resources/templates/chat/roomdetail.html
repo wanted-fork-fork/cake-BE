@@ -74,7 +74,7 @@
         }
     });
     // pub/sub event
-    ws.connect({}, function(frame) {
+    ws.connect({Authorization : "bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXhvcjg1ODJAYWpvdS5hYy5rciIsImV4cCI6MTY0MTExNTA1NH0.SpQXCP7KcXsvvRv5u1vCd0egJzn9GVGJ_rnu7211zF0"}, function(frame) {
         ws.subscribe("/sub/chat/room/"+vm.$data.roomId, function(message) {
             var recv = JSON.parse(message.body);
             vm.recvMessage(recv);

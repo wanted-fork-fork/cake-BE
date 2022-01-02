@@ -1,5 +1,7 @@
 package com.forkfork.cake.config;
 
+import java.util.Objects;
+
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -7,11 +9,14 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
-import lombok.SneakyThrows;
+import com.forkfork.cake.util.JwtTokenUtil;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class StompHandler implements ChannelInterceptor {
-	// private final JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenUtil jwtTokenUtil;
 
 	@Override
 	public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -20,7 +25,8 @@ public class StompHandler implements ChannelInterceptor {
 		System.out.println("헤더 : " + message.getHeaders());
 		System.out.println("토큰" + accessor.getNativeHeader("Authorization"));
 		if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-			// throw new Exception("123");
+			jwtTokenUtil.getSubject(
+				Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7));
 		}
 		return message;
 	}
