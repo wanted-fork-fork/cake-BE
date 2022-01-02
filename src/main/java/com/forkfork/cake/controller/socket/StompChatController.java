@@ -1,6 +1,8 @@
 package com.forkfork.cake.controller.socket;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +31,9 @@ public class StompChatController {
 	// }
 
 	@MessageMapping("/chat/message")
-	public void message(ChatMessageDTO message) {
+	public void message(ChatMessageDTO message, SimpMessageHeaderAccessor simpMessageHeaderAccessor) {
+		SimpMessageType messageType = simpMessageHeaderAccessor.getMessageType();
+		System.out.println("messageType = " + messageType);
 		if (ChatMessageDTO.MessageType.ENTER.equals(message.getType()))
 			message.setMessage(message.getSender() + "님이 입장하셨습니다.");
 		template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);

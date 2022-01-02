@@ -20,8 +20,6 @@ public class StompHandler implements ChannelInterceptor {
 		System.out.println("헤더 : " + message.getHeaders());
 		System.out.println("토큰" + accessor.getNativeHeader("Authorization"));
 		if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-			System.out.println("connect!!!!!!!!!!!!!!!!");
-			// jwtTokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7));
 			// throw new Exception("123");
 		}
 		return message;
